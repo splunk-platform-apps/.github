@@ -1,0 +1,19 @@
+name: Auto Assign Issues
+on:
+  issues:
+    types: [opened]
+
+jobs:
+  auto-assign:
+    runs-on: ubuntu-latest
+    steps:
+      - name: "Auto-assign issue"
+        uses: pozil/auto-assign-issue@v2
+        with:
+          assignees: procommand,joseacunacarrera,edro15
+          numOfAssignee: 2
+          allowSelfAssign: false
+          # Auto-assigns new issues to two users randomly chosen from listed ones
+          # It won't self-assign to the issue author
+          # TODO evaluate and eventually assign to team!
+          # https://github.com/pozil/auto-assign-issue

@@ -1,0 +1,83 @@
+name: Quality Assessment for TAs
+
+on:
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  # fossa-scan:
+  #  uses: splunk/oss-scanning/.github/workflows/oss-scan.yml@main
+  #  secrets: inherit
+    # FOSSA tries to identify open source dependencies used in our packages and checks for vulnerabilities and license issues.
+    # FOSSA is an Open Source Scanning and License Compliance Management tool.
+
+  run-appinspect:
+    uses: ./.github/workflows/appinspect.yml
+    secrets: inherit
+
+  appinspect:
+    runs-on: ubuntu-latest
+    needs: run-appinspect
+    outputs:
+      failures: ${{ steps.result.outputs.value }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: CLI Results
+        uses: actions/download-artifact@v4
+        with:
+          name: appinspect_result_cloud
+      - name: API Results
+        uses: actions/download-artifact@v4
+        with:
+          name: AppInspect_response_cloud
+      - name: Read AppInspect Result
+        id: result
+        run: |
+          result=$(cat appinspect_result.json | jq '.summary.failure')
+          tr -d '\n' < AppInspect_response.html > AppInspect_response_oneline.html
+          api_extract=$(sed -n -E 's/.*Failures.*<td>[^<]*([0-9]+).*<\/td>.*/\1/p' AppInspect_response_oneline.html)
+          api_result=$(echo "$api_extract" | sed 's/%$//')
+          if [[ "$result" -ne 0 ]]; then
+            summary=$(cat appinspect_result.json | jq '.summary')
+            echo "AppInspect CLI failed. Summary: $summary"
+          fi
+          echo "value=$result,$api_result" >> $GITHUB_OUTPUT
+
+  docs-linting:
+    uses: ./.github/workflows/docs-linting.yml
+
+  gold-standard:
+    runs-on: ubuntu-latest
+    needs:
+      - appinspect
+      - docs-linting
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/download-artifact@v4
+        with:
+          name: docs-linting-report
+      - name: Get Docs-Linting report path
+        id: docslinting
+        run: |
+          filepath=$(find $GITHUB_WORKSPACE/ -name "vale-report.json")
+          echo "reportpath=$filepath" >> $GITHUB_OUTPUT
+      - name: Assess Gold Standard compatibility
+        id: qa_goldstandard
+        uses: ./.github/actions/goldstandard
+        with:
+          appinspect-failures: ${{ needs.appinspect.outputs.failures }}
+          report-path: ${{ needs.docs.docslinting.reportpath }}
+      - name: Results
+        env:
+          SCORE: ${{ steps.qa_goldstandard.outputs.score }}
+          THRESHOLD: ${{ steps.qa_goldstandard.outputs.min_score }}
+        run: |
+          echo "TA scored $SCORE points. Comparing it against $THRESHOLD..."
+
+          if [ "$SCORE" -ge "$THRESHOLD" ]; then
+            echo "Score meets or exceeds the threshold: the TA is Gold Standard compatible!"
+          else
+            echo "Score does not meet the minimum passing score of $THRESHOLD points"
+            echo "Please verify your TA is built using the latest UCC version, performs configuration validation, provides std logging format and uses latest dependencies"
+          fi

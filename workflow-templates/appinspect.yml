@@ -1,0 +1,120 @@
+name: AppInspect
+
+on:
+  pull_request:
+    branches:
+      - main
+    paths:
+      - 'package/**'
+  workflow_call:
+
+# Allow only 1 concurrent execution
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  appdetector:
+    runs-on: ubuntu-latest
+    outputs:
+      app_type: ${{ steps.app.outputs.type}}
+      app_builder_ucc: ${{ steps.app.outputs.is_builder_ucc }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Run detector
+        id: detector
+        uses: ./.github/actions/splunk-apps-detector
+        with:
+          app-directory: ${{ github.workspace }}
+      - name: Read detector results
+        id: app
+        run: |
+          report=$(cat ${{ steps.detector.outputs.report-path }})
+          classification=$(echo $report | jq -r '.summary.classification.classification')
+          if [[ $classification == "ta" ]]; then
+            builder=$(echo $report | jq -r '.summary.builder.name')
+            if [[ ! -z "${builder:-}" && $builder == *"UCC"* ]]; then
+              t=$(echo "${classification}_${builder}")
+            else
+              t=$(echo "${classification}")
+            fi
+          else
+            t=$(echo "${classification}")
+          fi
+          echo "type=${t}" >> $GITHUB_OUTPUT
+          comparison=0
+          if [[ "${t}" == *"ta_UCC"* ]]; then
+            comparison=1
+          fi
+          echo "is_builder_ucc=$comparison" >> $GITHUB_OUTPUT
+  build:
+    needs: appdetector
+    uses: ./.github/workflows/build.yml
+    with:
+      is_app_uccta: ${{ needs.appdetector.outputs.app_builder_ucc == '1'}}
+
+  appinspect-cli:
+    name: appinspect-cli ${{ matrix.tags }}
+    runs-on: ubuntu-latest
+    continue-on-error: true
+    needs: build
+    strategy:
+      matrix:
+        tags:
+          - "cloud"
+          - "appapproval"
+          - "deprecated_feature"
+          - "developer_guidance"
+          - "future"
+          - "self-service"
+          - "splunk_appinspect"
+    steps:
+      # FIXME add case of having app_name and app_version! Maybe leverage ENV vars
+      - uses: actions/checkout@v4
+      - uses: actions/download-artifact@v4
+        with:
+          name: ${{ needs.build.outputs.addon_name }}-${{ needs.build.outputs.addon_version }}
+          path: dist
+      - uses: splunk/appinspect-cli-action@v2.8
+        with:
+          app_path: dist/${{ needs.build.outputs.addon_name }}-${{ needs.build.outputs.addon_version }}.tar.gz
+          included_tags: ${{ matrix.tags }}
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: appinspect_result_${{ matrix.tags }}
+          path: appinspect_result.json
+
+  appinspect-api:
+    name: AppInspect API Validation
+    runs-on: ubuntu-latest
+    needs: build
+    strategy:
+      matrix:
+        tags:
+          - "cloud"
+          - "appapproval"
+          - "deprecated_feature"
+          - "developer_guidance"
+          - "future"
+          - "self-service"
+          - "splunk_appinspect"
+    # Job executed if trigger is not pull_request
+    if: github.event_name != 'pull_request'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/download-artifact@v4
+        with:
+          name: ${{ needs.build.outputs.addon_name }}-${{ needs.build.outputs.addon_version }}
+          path: dist
+      - uses: splunk/appinspect-api-action@v3.0
+        with:
+          username: ${{ secrets.SPLUNKBASE_USERNAME }}
+          password: ${{ secrets.SPLUNKBASE_PASSWORD }}
+          app_path: dist/
+          included_tags: ${{ matrix.tags }}
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: AppInspect_response_${{ matrix.tags }}
+          path: AppInspect_response.html

@@ -1,0 +1,57 @@
+name: 'Gold Standard Assessment'
+description: 'Evaluate a TA against the Gold Standard'
+author: 'FDSE'
+
+inputs:
+  appinspect-failures:
+    description: "The amount of failures detected by AppInspect in cli_failures,api_failures format (e.g. 0,2)"
+    required: true
+    default: "-1,-1"
+  report-path:
+    description: "Path to the documentation linting report"
+    required: false
+
+runs:
+  using: composite
+  steps:
+    - name: Install yq
+      run: |
+        sudo apt-get update && sudo apt-get install -y jq
+        sudo wget https://github.com/mikefarah/yq/releases/latest/download/yq_linux_amd64 -O /usr/bin/yq
+        sudo chmod +x /usr/bin/yq
+      shell: bash
+
+    - name: Fetching the minimum passing score
+      id: passing_score
+      run: |
+        result=$(yq '.metadata.passing_score' $GITHUB_WORKSPACE/.github/actions/goldstandard/ruleset/ruleset.yml)
+        echo "score=${result}" >> $GITHUB_OUTPUT
+      shell: bash
+
+    - name: Validate inputs
+      run: |
+        failures="${{ inputs.appinspect-failures }}"
+        if ! [[ "$failures" =~ ^[0-9]+,[0-9]+$ ]]; then
+          echo "Invalid appinspect-failures format: $failures. Expected format is cli_failures,api_failures."
+          exit 1
+        fi
+        echo "AppInspect Failures: $failures"
+      shell: bash
+
+    - name: Calculate scorecards
+      id: run_script
+      env:
+        APPINSPECT_FAILURES: ${{ inputs.appinspect-failures }}
+        REPORT_PATH: ${{ inputs.report-path }}
+      run: |
+        $GITHUB_WORKSPACE/.github/actions/goldstandard/calculator.sh $GITHUB_WORKSPACE/.github/actions/goldstandard/ruleset/ruleset.yml
+      shell: bash
+
+outputs:
+  score:
+    description: "The score given to the TA"
+    value: "${{ steps.run_script.outputs.score }}"
+
+  min_score:
+    description: "The minimum score accepted for Gold Standard compatibility"
+    value: "${{ steps.passing_score.outputs.score }}"

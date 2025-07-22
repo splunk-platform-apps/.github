@@ -1,0 +1,8 @@
+extends: existence
+message: "The section '%s' appears to be empty. Please add content."
+level: warning
+scope: raw
+ignorecase: true
+nonword: true
+tokens:
+ - "^#+ .+\\n(?:\\n[#+|$]|[#+|$])"

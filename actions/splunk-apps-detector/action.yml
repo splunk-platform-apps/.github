@@ -1,0 +1,29 @@
+name: 'Splunk Apps Detector'
+description: 'Identify Splunk App'
+author: 'FDSE'
+
+inputs:
+  app-directory:
+    description: "The directory containing the source code for your Splunk App"
+    required: false
+    default: ./package
+
+runs:
+  using: composite
+  steps:
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.10'
+    - name: Run Python script
+      id: run-script
+      env:
+        APP_DIRECTORY: ${{ inputs.app-directory }}
+      run: |
+        python3 $GITHUB_WORKSPACE/.github/actions/splunk-apps-detector/main.py
+      shell: bash
+
+outputs:
+  report-path:
+    description: "The path for the generated report"
+    value: ${{ steps.run-script.outputs.reportpath }}

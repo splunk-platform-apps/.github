@@ -1,0 +1,31 @@
+# ruleset.yml
+metadata:
+  revision: "0.3"
+  author: "FDSE"
+  description: "Ruleset extracted from Scorecard for validating the TA against the Gold Standards"
+  passing_score: 65
+
+rules:
+  - name: "dev1.1"
+    description: "TA is built using UCC"
+    score: 20
+    path: "./ruleset/dev1.1.sh"
+    mandatory: "true"
+
+  - name: "dev1.2"
+    description: "TA should be released using the latest UCC version; 6 feature versions behind is acceptable"
+    score: 12
+    path: "./ruleset/dev1.2.sh"
+    mandatory: "false"
+
+  - name: "dev1.13"
+    description: "TA should pass AppInspect CLI and AppInspect API checks"
+    score: 3
+    path: "./ruleset/dev1.13.sh"
+    mandatory: "true"
+
+  - name: "doc4.1"
+    description: "TA should provide high quality external documentation"
+    score: 6
+    path: "./ruleset/doc4.1.py"
+    mandatory: "true"
