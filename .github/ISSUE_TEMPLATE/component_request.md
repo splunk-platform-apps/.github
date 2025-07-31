@@ -1,4 +1,4 @@
-name: New App Repository
+name: New App Repo
 description: Request to contribute a brand new app under a new repository!
 title: "New App: "
 labels: ["app", "create"]
