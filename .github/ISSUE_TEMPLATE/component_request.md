@@ -1,0 +1,35 @@
+name: New App Repository
+description: Request to contribute a brand new app under a new repository!
+title: "New App: "
+labels: ["app", "create"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for your interest in contributing your component!
+  - type: textarea
+    attributes:
+      label: The name of the new component you are proposing
+      description: You can use this information later to create a README for your component.
+    validations:
+      required: true
+  - type: textarea
+    attributes:
+      label: Framework and Tools Used
+      description: Are you planning to use a framework or tool to build your app? If yes, which one? examples include: [UCC Framework](https://splunk.github.io/addonfactory-ucc-generator/), [Add-On Builder (AoB)](https://splunkbase.splunk.com/app/2962), and [Splunk UI Toolkit](https://splunkui.splunk.com/)
+    validations:
+      required: true
+  - type: textarea
+    attributes:
+      label: Integration
+      description: The technology that your app will integrate with
+    validations:
+      required: true
+  - type: textarea
+    attributes:
+      label: About
+      description: Description of what the app does. Include details such as the component's goals and scope.
+  - type: input
+    attributes:
+      label: Code Owner(s)
+      description: A code owner is responsible for supporting the component, including triaging issues, reviewing PRs, and submitting bug fixes. List one (or more) people who are willing to take on this role.
