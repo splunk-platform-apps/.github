@@ -1,0 +1,36 @@
+name: New App Repository
+description: Request to contribute a brand new app under a new repository!
+title: "Feature Request: "
+labels: ["enhancement"]
+body:
+  - type: textarea
+    attributes:
+      label: Is your feature request related to a problem? Please describe
+      description: A clear and concise description of what the problem is. Ex. I'm always frustrated when...
+      placeholder: |
+        Describe the problem with the component...
+      validations:
+        required: true
+  - type: textarea
+    attributes:
+      label: Describe the solution you'd like
+      description: A clear and concise description of what you want to happen.
+      placeholder: |
+        Describe what you would like to see...
+      validations:
+        required: true
+  - type: textarea
+    attributes:
+      label: Describe alternatives you've considered
+      description: A clear and concise description of any alternative solutions or features you've considered.
+      placeholder: |
+        Describe other options...
+      validations:
+        required: true
+  - type: textarea
+    attributes:
+      label: Additional Context
+      description: Add any other context or screenshots about the feature request here.
+      placeholder: |
+        Add any additional context or information here...
+

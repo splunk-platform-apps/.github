@@ -1,7 +1,7 @@
 name: New App Repository
 description: Request to contribute a brand new app under a new repository!
 title: "Bug Report: "
-labels: ["bug"]
+labels: ["bug", "needs triage"]
 body:
   - type: markdown
     attributes:
