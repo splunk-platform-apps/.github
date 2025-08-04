@@ -16,7 +16,9 @@ body:
   - type: textarea
     attributes:
       label: Framework and Tools Used
-      description: Are you planning to use a framework or tool to build your app? If yes, which one? examples include: [UCC Framework](https://splunk.github.io/addonfactory-ucc-generator/), [Add-On Builder (AoB)](https://splunkbase.splunk.com/app/2962), and [Splunk UI Toolkit](https://splunkui.splunk.com/)
+      description: Are you planning to use a framework or tool to build your app? If yes, which one? 
+      value: |
+        examples of frameworks include: [UCC Framework](https://splunk.github.io/addonfactory-ucc-generator/), [Add-On Builder (AoB)](https://splunkbase.splunk.com/app/2962), and [Splunk UI Toolkit](https://splunkui.splunk.com/)
     validations:
       required: true
   - type: textarea
