@@ -1,0 +1,11 @@
+name: Give Feedback
+description: Did we miss something? Leave feedback for the Developer Relations team by submitting an issue!
+title: "DevRel Feedback: "
+labels: ["feedback"]
+body:
+  - type: textarea
+    attributes:
+      label: Feedback here
+      description: Feel free to leave any questions, concerns, suggestions or feedback in the field below!
+    validations:
+      required: true
