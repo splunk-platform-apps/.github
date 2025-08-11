@@ -3,17 +3,13 @@
 </h1>
 
 <p align="center">
-    put a logo here
-</p>
-
-<p align="center">
     The Splunk> Platform Apps is a collection of open sourced, community and Splunk made apps, add-ons, and solutions.
 </p>
 
 <p align="center">
   <a href="https://docs.splunk.com/Documentation/Splunk/9.4.2/Admin/Whatsanapp">Learn About Splunk Apps and Add-ons</a>
   ·
-  <a href="https://github.com/splunk-platform-apps/">Using These Repositories</a>
+  <a href="https://github.com/splunk-platform-apps/README.md">Using These Repositories</a>
   ·
   <a href="#contribute">Contribute</a>
 </p>
