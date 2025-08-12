@@ -35,3 +35,5 @@ body:
     attributes:
       label: Code Owner(s)
       description: A code owner is responsible for supporting the component, including triaging issues, reviewing PRs, and submitting bug fixes. List one (or more) people who are willing to take on this role.
+      validations:
+        required: true
