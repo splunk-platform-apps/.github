@@ -32,6 +32,8 @@ An overview of the expected repository structure.
 │   ├── metadata
 │   └── static
 ├── etc
+├── src
+├── static
 └── tests
     ├── conftest.py
     └── pytest.ini
@@ -42,6 +44,7 @@ An overview of the expected repository structure.
 * `docs` contains main documentation
 * `.gitignore` to ignore hidden or OS_ files
 * `etc/` contains additional files such as images, configuration files, etc
+* `src/` and `static` contains files required by [docusaurus](https://github.com/splunk-platform-apps/Initialization/blob/main/documentation/DEV_GUIDELINES.md)
 * `package/` contains Splunk App / Add-on Source Files
 * `tests/` contains files for unit testing, e2e testing, mocks, postman collections, etc
 
