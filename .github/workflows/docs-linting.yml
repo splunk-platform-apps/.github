@@ -65,7 +65,13 @@ jobs:
             echo "Found 'TODO' in one or more paragraphs in docs/readme.md ❌ Please add proper content"
             exit 1
           fi
-
+      - uses: actions/setup-python@v5
+        with:
+          python-version: 3.9
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install vale
       - name: Run Vale and Capture Output
         run: |
           # Download and install packages
