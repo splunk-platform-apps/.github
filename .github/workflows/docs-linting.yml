@@ -10,20 +10,20 @@ jobs:
       - name: Checkout latest rules
         uses: actions/checkout@v4
         with:
-          repository: splunk-platform-apps/.github
+          repository: splunk/vale-splunk-style-guide
           path: ./vale-rules
           token: ${{ secrets.GITHUB_TOKEN }}
-      - name: Move files for Vale
+      - name: Fetch Vale configuration files and styles
         run: |
-            cp vale-rules/.github/styles/.vale.ini .vale.ini
-            mkdir -p .github/styles/
-            cp -rf vale-rules/.github/styles/SplunkCommunity .github/styles
+            cp vale-rules/.vale.ini .vale.ini
+            mkdir -p styles/
+            cp -rf vale-rules/styles/Splunk styles
             ls -la
-            ls -la .github/styles
+            ls -la /styles
       - name: Check whether root README exists
         run: |
           if [ ! -f README.md ]; then
-            echo "README.md file is missing"
+            echo "❌ root README.md file is missing"
             exit 1
           fi
       - name: Check whether docs exists and contains a README
@@ -31,13 +31,42 @@ jobs:
           if [ -d "./docs" ]; then
             echo "Folder exists."
             if [ ! -f "./docs/readme.md" ]; then
-              echo "docs/readme.md file is missing"
+              echo "❌ docs/readme.md file is missing"
               exit 1
             fi
           else
-            echo "Folder 'docs' does not exist."
+            echo "❌ Folder 'docs' does not exist."
             exit 1
           fi
+      - name: Check for required sections in Documentation
+        run: |
+          patterns=(
+            "#{1,3} Contributing"
+            "#{1,3} Usage"
+            "#{1,3} Installation"
+          )
+
+          for pattern in "${patterns[@]}"; do
+            if grep -Eq "$pattern" docs/readme.md; then
+              echo "Section '${pattern:7}' found in docs/readme.md ✅"
+            else
+              echo "Section '${pattern:7}' not found in docs/readme.md ❌"
+              exit 1
+            fi
+          done
+      - name: Check for empty sections
+        run: |
+          if grep -Eq "^#+ .+\\n(?:\\n[#+|$]|[#+|$])" docs/readme.md; then
+            echo "Empty section found in docs/readme.md ❌ Please add content"
+            exit 1
+          fi
+      - name: Check for incomplete sections
+        run: |
+          if grep -Eq "TODO" docs/readme.md; then
+            echo "Found 'TODO' in one or more paragraphs in docs/readme.md ❌ Please add proper content"
+            exit 1
+          fi
+
       - name: Run Vale and Capture Output
         run: |
           # Download and install packages
