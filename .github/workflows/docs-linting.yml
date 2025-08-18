@@ -19,7 +19,7 @@ jobs:
             mkdir -p styles/
             cp -rf vale-rules/styles/Splunk styles
             ls -la
-            ls -la /styles
+            ls -la styles/
       - name: Check whether root README exists
         run: |
           if [ ! -f README.md ]; then
