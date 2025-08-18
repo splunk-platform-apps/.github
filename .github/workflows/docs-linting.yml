@@ -12,7 +12,6 @@ jobs:
         with:
           repository: splunk/vale-splunk-style-guide
           path: ./vale-rules
-          token: ${{ secrets.GITHUB_TOKEN }}
       - name: Fetch Vale configuration files and styles
         run: |
             cp vale-rules/.vale.ini .vale.ini
