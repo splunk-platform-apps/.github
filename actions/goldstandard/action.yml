@@ -24,7 +24,7 @@ runs:
     - name: Fetching the minimum passing score
       id: passing_score
       run: |
-        result=$(yq '.metadata.passing_score' $GITHUB_WORKSPACE/.github/actions/goldstandard/ruleset/ruleset.yml)
+        result=$(yq '.metadata.passing_score' $GITHUB_ACTION_PATH/ruleset/ruleset.yml)
         echo "score=${result}" >> $GITHUB_OUTPUT
       shell: bash
 
@@ -44,7 +44,7 @@ runs:
         APPINSPECT_FAILURES: ${{ inputs.appinspect-failures }}
         REPORT_PATH: ${{ inputs.report-path }}
       run: |
-        $GITHUB_WORKSPACE/.github/actions/goldstandard/calculator.sh $GITHUB_WORKSPACE/.github/actions/goldstandard/ruleset/ruleset.yml
+        $GITHUB_ACTION_PATH/calculator.sh $GITHUB_ACTION_PATH/ruleset/ruleset.yml
       shell: bash
 
 outputs:
