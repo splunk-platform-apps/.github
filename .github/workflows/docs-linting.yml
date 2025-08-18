@@ -7,33 +7,19 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Checkout reusable workflow repo
+      - name: Checkout latest rules
         uses: actions/checkout@v4
         with:
           repository: splunk-platform-apps/.github
-          path: .github-repo
-      - uses: actions/setup-python@v5
-        with:
-          python-version: 3.9
-      - name: Install dependencies
+          path: ./vale-rules
+          token: ${{ secrets.GITHUB_TOKEN }}
+      - name: Move files for Vale
         run: |
-          python -m pip install --upgrade pip
-          python -m pip install vale crudini
-          echo $GITHUB_WORKSPACE
-          ls -la $GITHUB_WORKSPACE
-      - name: Create Vale configuration file
-        run: |
-          # Initialize the .vale.ini file and set general configurations
-          crudini --set .vale.ini '' StylesPath .github/styles
-          crudini --set .vale.ini '' MinAlertLevel error
-
-          # Add other packages
-          crudini --set .vale.ini '' Packages Microsoft
-
-          # Add the section for Markdown files and specify the custom style
-          # TODO depending on the structure might be based on different styles
-          crudini --set .vale.ini '*.md' BasedOnStyles 'SplunkCommunity, Microsoft'
-        working-directory: $GITHUB_WORKSPACE/.github-repo
+            cp vale-rules/.github/styles/.vale.ini .vale.ini
+            mkdir -p .github/styles/
+            cp -rf vale-rules/.github/styles/SplunkCommunity .github/styles
+            ls -la
+            ls -la .github/styles
       - name: Check whether root README exists
         run: |
           if [ ! -f README.md ]; then
