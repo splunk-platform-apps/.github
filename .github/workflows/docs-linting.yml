@@ -1,14 +1,17 @@
 name: Docs Linting
 
-on: workflow_call
-
-defaults:
-  run:
-    working-directory: ${{ github.workspace }}
+on:
+  workflow_call:
+    inputs:
+      working-directory:
+        type: string
 
 jobs:
   readme-linting:
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ${{ inputs.working-directory }}
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
