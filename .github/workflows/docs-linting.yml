@@ -7,6 +7,11 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+      - name: Checkout reusable workflow repo
+        uses: actions/checkout@v4
+        with:
+          repository: splunk-platform-apps/.github
+          path: .github-repo
       - uses: actions/setup-python@v5
         with:
           python-version: 3.9
@@ -15,6 +20,7 @@ jobs:
           python -m pip install --upgrade pip
           python -m pip install vale crudini
           echo $GITHUB_WORKSPACE
+          ls -la $GITHUB_WORKSPACE
       - name: Create Vale configuration file
         run: |
           # Initialize the .vale.ini file and set general configurations
@@ -27,13 +33,13 @@ jobs:
           # Add the section for Markdown files and specify the custom style
           # TODO depending on the structure might be based on different styles
           crudini --set .vale.ini '*.md' BasedOnStyles 'SplunkCommunity, Microsoft'
+        working-directory: $GITHUB_WORKSPACE/.github-repo
       - name: Check whether root README exists
         run: |
           if [ ! -f README.md ]; then
             echo "README.md file is missing"
             exit 1
           fi
-        working-directory: $GITHUB_WORKSPACE
       - name: Check whether docs exists and contains a README
         run: |
           if [ -d "./docs" ]; then
@@ -46,7 +52,6 @@ jobs:
             echo "Folder 'docs' does not exist."
             exit 1
           fi
-        working-directory: $GITHUB_WORKSPACE
       - name: Run Vale and Capture Output
         run: |
           # Download and install packages
