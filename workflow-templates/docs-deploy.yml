@@ -1,16 +1,19 @@
 name: Deploy Docusaurus to GitHub Pages
 
 on:
-  push:
-    paths:
-      - 'docs/**'
   pull_request:
     branches:
-      - main
+      - $default-branch
     paths:
       - 'docs/**'
 
+# Allow only 1 concurrent execution
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 permissions:
+  contents: read # to successfully checkout repo
   pages: write # to deploy to Pages
   id-token: write # to verify the deployment originates from an appropriate source
 
