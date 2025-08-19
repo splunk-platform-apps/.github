@@ -6,6 +6,7 @@ on:
       - $default-branch
     paths:
       - 'docs/**'
+      - 'docusaurus.config.ts'
 
 # Allow only 1 concurrent execution
 concurrency:
