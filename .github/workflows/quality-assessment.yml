@@ -148,7 +148,7 @@ jobs:
         uses: splunk-platform-apps/.github/actions/goldstandard@main
         with:
           appinspect-failures: ${{ needs.appinspect-cli.outputs.failures }}
-          report-path: ${{ needs.docs.docslinting.reportpath }}
+          report-path: ${{ steps.docslinting.outputs.reportpath }}
       - name: Results
         env:
           SCORE: ${{ steps.qa_goldstandard.outputs.score }}
