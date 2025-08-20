@@ -2,12 +2,22 @@ name: Package Splunk Add-On, Run AppInspect, Release
 
 on:
   pull_request:
-    branches: [ $default-branch ]
+    branches:
+      - $default-branch
     types: [opened, reopened, synchronize]
   push:
     tags:
       - "v[0-9]+.[0-9]+.[0-9]+"
 
+# Allow only 1 concurrent execution
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+# Grants permission to create releases
+permissions:
+  contents: write
+
 jobs:
   call-workflow:
-    uses: splunk-platform-apps/.github/.github/workflows/build-appinspect-release.yml@repo-workflows
+    uses: splunk-platform-apps/.github/.github/workflows/build-appinspect-release.yml@main
