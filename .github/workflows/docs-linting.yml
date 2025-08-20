@@ -1,6 +1,7 @@
 name: Docs Linting
 
-on: workflow_call
+on:
+  workflow_call
 
 jobs:
   readme-linting:
