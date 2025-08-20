@@ -16,3 +16,11 @@ All Splunk Platform Apps must maintain comprehensive documentation following the
 - Automated quality checks and deployment process
 
 Developers are responsible for maintaining accurate and complete documentation while following the pre-configured templates and structure.
+
+### Changelog
+Our repositories will use a `CHANGELOG.md` to document changes between versions. This will allow us to create more intelligible releases and add clarity to end users as to what they should expect if a new version is pushed.
+
+#### CHANGELOG.md
+All notable changes to this project will be documented in this file.
+
+The format is based on [Keep a Changelog](http://keepachangelog.com/) and this project adheres to [Semantic Versioning](http://semver.org/).
