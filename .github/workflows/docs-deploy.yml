@@ -1,16 +1,10 @@
 name: Deploy Docusaurus to GitHub Pages
 
 on:
-  push:
-    paths:
-      - 'docs/**'
-  pull_request:
-    branches:
-      - main
-    paths:
-      - 'docs/**'
+  workflow_call
 
 permissions:
+  contents: read # to successfully checkout repo
   pages: write # to deploy to Pages
   id-token: write # to verify the deployment originates from an appropriate source
 
