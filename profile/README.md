@@ -3,8 +3,8 @@
 </h1>
 
 <p align="center">
-  <a href="https://github.com">
-    <img src="https://github.com/splunk-platform-apps/.github/tree/main/.github/images/devrel.jpg" alt="OpenTelemetry logo">
+  <a href="https://github.com/splunk-platform-apps">
+    <img src="https://github.com/splunk-platform-apps/.github/blob/main/.github/images/devrel.jpg" alt="OpenTelemetry logo">
   </a>
 </p>
 
