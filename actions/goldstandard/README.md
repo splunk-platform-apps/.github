@@ -3,7 +3,7 @@ This action aims automatically assessing your Splunk Add-on compliance with the 
 
 The purpose of the standard is defining best practices that lay the foundation for successful Splunk Technology Add-on (TA) development. By complying with it, your TA aligns with Splunk's highest standards, enhances compatibility and facilitates long-term maintainability.
 
-> This is a WIP and content may change.
+:construction: **This is a WIP and content may change** :construction:
 
 ## Usage
 Use the action within your own Github worflows as shown below
