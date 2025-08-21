@@ -1,7 +1,0 @@
-extends: existence
-message: "'%s' detected in paragraph. Please add proper content."
-level: error
-scope: paragraph
-ignorecase: true
-tokens:
- - TODO
