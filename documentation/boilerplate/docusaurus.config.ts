@@ -4,9 +4,13 @@ import type * as Preset from '@docusaurus/preset-classic';
 
 // This runs in Node.js - Don't use client-side code here (browser APIs, JSX...)
 
+const app_name: string = '<ADD HERE YOUR APP NAME>';
+const repo_name: string = '<ADD HERE YOUR REPO NAME>';
+const app_descr:string = '<ADD HERE APP DESCRIPTION>';
+
 const config: Config = {
-  title: 'boilerplate', // TODO: Replace with the actual app name
-  tagline: 'This is a boilerplate app to showcase docusaurus usage for documenting Splunk Apps and Add-Ons', // TODO: Replace with the actual app description
+  title: app_name,
+  tagline: app_descr,
   favicon: 'img/favicon.ico',
 
   // Set the production url of your site here
@@ -48,10 +52,10 @@ const config: Config = {
   themeConfig: {
     image: 'img/docs-readme-template.png',
     navbar: {
-      title: 'boilerplate', // TODO: Replace with the actual app name
       logo: {
         alt: 'Splunk Logo',
         src: 'img/logo.svg',
+        href: 'https://preview.dev.splunk.com/',
         srcDark: 'img/logo-dark.svg',
       },
       items: [
@@ -62,9 +66,10 @@ const config: Config = {
           label: 'Documentation',
         },
         {
-          href: 'https://github.com/splunk-platform-apps/boilerplate', // TODO: Replace with the actual GitHub link
-          label: 'GitHub',
+          href: 'https://github.com/splunk-platform-apps/' + repo_name,
+          className: 'header-github-link',
           position: 'right',
+          'aria-label': 'GitHub repository',
         },
       ],
     },
@@ -85,11 +90,15 @@ const config: Config = {
           items: [
             {
               label: 'GitHub',
-              href: 'https://github.com/splunk-platform-apps/boilerplate', // TODO: Replace with the actual GitHub link
+              href: 'https://github.com/splunk-platform-apps',
             },
             {
               label: 'Community Slack',
-              href: 'https://splunk-usergroups.slack.com/app_redirect?channel=appdev'
+              href: 'https://splunkcommunity.slack.com/archives/C04DC8JJ6'
+            },
+            {
+              label: 'Contact',
+              href: 'mailto:devinfo@splunk.com'
             }
           ],
         },
