@@ -4,10 +4,12 @@ This guide outlines the documentation requirements and setup for Splunk Platform
 
 ## Requirements
 
-Your repository comes pre-configured with all necessary files and templates. As a developer, your primary task is populating these templates with your app's content while maintaining the defined structure.
+Your repository comes pre-configured with all necessary files and templates.
+
+:point_right: **As a developer, your primary task is populating these templates with your app's content while maintaining the defined structure.**
 
 ### Responsabilities
-As a developer, you are asked to:
+:white_check_mark: Please DO:
 
 1. Update `<path-to-your-app-src>/docs/readme.md` with your app's specific content following the provided template
 2. Maintain accurate and complete documentation
@@ -15,7 +17,7 @@ As a developer, you are asked to:
 4. Follow the established structure
 5. Address any quality check failures
 
-Please DO NOT modify or remove:
+:x: Please DO NOT modify or remove:
 - Docusaurus configuration files
 - Documentation templates
 - Pipeline configurations
@@ -49,11 +51,11 @@ All Splunk Platform Apps must maintain two key documentation files:
 
 ### Deployment
 
-Documentation is **automatically deployed to GitHub Pages** through the `docs-deploy.yml` pipeline, already available in your repository. This pipeline will:
+Documentation is **automatically deployed to GitHub Pages** through the [`docs-deploy.yml`](https://github.com/splunk-platform-apps/.github/.github/workflows/docs-deploy.yml) pipeline. This pipeline will:
 
 - Build the documentation from your `docs/` folder
 - Deploy to GitHub Pages
-- Run on documentation changes
+- Run on documentation changes in the default `main` branch
 
 ### Quality Assessment
 
