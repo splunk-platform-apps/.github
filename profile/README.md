@@ -3,6 +3,12 @@
 </h1>
 
 <p align="center">
+  <a href="https://github.com">
+    <img src="https://github.com/splunk-platform-apps/.github/tree/main/.github/images/devrel.jpg" alt="OpenTelemetry logo">
+  </a>
+</p>
+
+<p align="center">
     The Splunk> Platform Apps is a collection of open sourced, community and Splunk made apps, add-ons, and solutions.
 </p>
 
