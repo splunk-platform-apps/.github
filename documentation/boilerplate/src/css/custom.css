@@ -1,0 +1,55 @@
+@import './fonts.css';
+/**
+ * Any CSS included here will be global. The classic template
+ * bundles Infima by default. Infima is a CSS framework designed to
+ * work well for content-centric websites.
+ */
+
+/* You can override the default Infima variables here. */
+:root {
+  --ifm-color-text: #000;
+  --ifm-color-primary: #FF0080;
+  --ifm-color-primary-dark: #CC0066;
+  --ifm-color-primary-darker: #990044;
+  --ifm-color-primary-darkest: #660033;
+  --ifm-color-primary-light: #FF1A8C;
+  --ifm-color-primary-lighter: #FF4DA6;
+  --ifm-color-primary-lightest: #FF80BF;
+  
+  --ifm-code-font-size: 95%;
+  --ifm-font-family-base: 'Splunk Data Sans Pro', 'Lexend', Arial, sans-serif;
+  --ifm-font-family-monospace: 'JetBrains Mono', SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+}
+
+/* Dark mode overrides */
+[data-theme='dark'] {
+  --ifm-color-text: #fff;
+  --ifm-background-color: #1C1E21;
+  --ifm-background-surface-color: #252729;
+  --ifm-color-primary: #FF0080;
+}
+
+/* Code blocks styling */
+.docusaurus-highlight-code-line {
+  background-color: rgba(0, 0, 0, 0.1);
+  display: block;
+  margin: 0 calc(-1 * var(--ifm-pre-padding));
+  padding: 0 var(--ifm-pre-padding);
+}
+
+[data-theme='dark'] .docusaurus-highlight-code-line {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+/* GitHub header icon */
+.header-github-link:hover {
+  opacity: 0.6;
+}
+
+.header-github-link::before {
+  content: '';
+  width: 24px;
+  height: 24px;
+  display: flex;
+  background: url("data:image/svg+xml,...") no-repeat;
+}
