@@ -121,7 +121,7 @@ jobs:
           echo "value=$result,0" >> $GITHUB_OUTPUT
 
   docs-linting:
-    uses: splunk-platform-apps/.github/.github/workflows/docs-linting.yml@main
+    uses: splunk-platform-apps/.github/.github/workflows/reusable-docs-linting.yml@main
 
   gold-standard:
     runs-on: ubuntu-latest

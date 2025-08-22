@@ -51,7 +51,7 @@ All Splunk Platform Apps must maintain two key documentation files:
 
 ### Deployment
 
-Documentation is **automatically deployed to GitHub Pages** through the [`docs-deploy.yml`](https://github.com/splunk-platform-apps/.github/.github/workflows/docs-deploy.yml) pipeline. This pipeline will:
+Documentation is **automatically deployed to GitHub Pages** through the [`docs-deploy.yml`](https://github.com/splunk-platform-apps/.github/.github/workflows/reusable-docs-deploy.yml) pipeline. This pipeline will:
 
 - Build the documentation from your `docs/` folder
 - Deploy to GitHub Pages

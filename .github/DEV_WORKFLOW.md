@@ -9,7 +9,7 @@ We recommend using the official [Splunk Platform Apps Docker image](https://gith
 Please follow [setup guidelines](https://github.com/splunk-platform-apps/Initialization/blob/main/Splunk-Platform-Apps-Docker/DEV_GUIDELINES.md) for more details about configuring this image.
 
 ### Documentation Expectations
-All Splunk Platform Apps must maintain comprehensive documentation following the established guidelines. Please refer to our [documentation guidelines](https://github.com/splunk-platform-apps/Initialization/blob/main/documentation/DEV_GUIDELINES.md) to learn more about:
+All Splunk Platform Apps must maintain comprehensive documentation following the established guidelines. Please refer to our [documentation guidelines](https://github.com/splunk-platform-apps/.github/blob/main/documentation/DEV_GUIDELINES.md) to learn more about:
 
 - Required structure and files
 - Content expectations and templates
