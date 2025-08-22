@@ -83,6 +83,6 @@ Basic usage examples will be provided with the specific implementation.
 ---
 
 ## Contributing
-See the [CONTRIBUTING.md] file for details.
+See the [CONTRIBUTING.md](https://github.com/splunk-platform-apps/.github/blob/main/.github/CONTRIBUTING.md) file for details.
 
 ---
