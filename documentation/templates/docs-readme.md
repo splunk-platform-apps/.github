@@ -48,4 +48,4 @@ Explain how to run tests if you've provided some.
 Provide any relevant link to the app / add-on / project.
 
 ## Contributing
-Add link to CONTRIBUTING.md file
+See the [CONTRIBUTING.md](https://github.com/splunk-platform-apps/.github/blob/main/.github/CONTRIBUTING.md) file for details.
