@@ -55,7 +55,7 @@ const config: Config = {
       logo: {
         alt: 'Splunk Logo',
         src: 'img/logo.svg',
-        href: 'https://preview.dev.splunk.com/',
+        href: 'https://dev.splunk.com/',
         srcDark: 'img/logo-dark.svg',
       },
       items: [
