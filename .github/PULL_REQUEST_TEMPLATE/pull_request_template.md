@@ -1,6 +1,4 @@
-Please ensure your pull request (PR) adheres to the following guidelines:
-
-- Please refer to our contributing documentation for any questions on submitting a pull request, link: [Contribution Guide]()
+:point_right: Please ensure your pull request (PR) adheres to our [Contribution Guidelines](https://github.com/splunk-soar-connectors/.github/blob/main/.github/CONTRIBUTING.md#high-level-contribution-overview) :point_left:
 
 ## Pull Request Checklist
 

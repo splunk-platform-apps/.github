@@ -65,7 +65,42 @@ By default we provide various automated checks you can leverage to test your cha
 - Click the "Checks" tab at the top of the pull request. **OR**
 - Click the "Details" link next to the list of checks that shows up at the bottom of the pull request. If the tests passed, this list will be hidden, so you will first need to click the "Show all checks" link.
 
-> TODO add more details on performed tests
+The checks performed are the following:
+
+(Pre-commit checks that can be run with a commit locally or with `pre-commit run --all-files`)
+
+- **Code Quality Checks**:
+  - Python linting and formatting with [Ruff](https://astral.sh/ruff)
+  - Security scanning with [semgrep](https://semgrep.dev/index.html)
+  - Shell linting and formatting with [ShellCheck](https://www.shellcheck.net/)
+- **General Checks**:
+  - Merge conflict detection
+  - End-of-file fixing
+  - Trailing whitespace cleanup
+  - JSON and YAML validation
+  - Prevent giant files from being committed
+- **Splunk-specific Checks**:
+  - Documentation building
+  - App dependency packaging
+  - Release notes validation
+
+Additionally, our CI/CD pipeline runs these checks on each pull request:
+
+- **Pre-commit Checks**:
+  - Listed above
+- **Build**: Creates app package
+- **Sanity Tests**: Validates app functionality for the Splunk Cloud environment via AppInspect CLI
+- **Quality Assessment**: Verifies Gold Standard compatibility and checks [documentation quality](https://github.com/splunk-platform-apps/.github/blob/main/documentation/DEV_GUIDELINES.md#quality-assessment)
+
+Other OOB pipelines focus on the [documentation deployment](https://github.com/splunk-platform-apps/.github/blob/main/documentation/DEV_GUIDELINES.md#deployment) and the [Add-On release](#code-release).
+
+## Code Release
+On each tag push, the following checks will be executed before releasing a new version of the Add-On:
+
+- **Build**: Creates app package
+- **Sanity Tests**: Validates app functionality for the Splunk Cloud environment via AppInspect CLI
+- **Release Notes Validation**: Checks whether the `CHANGELOG.md` file has been populated with latest info - [guidelines](https://github.com/splunk-platform-apps/.github/blob/main/.github/DEV_WORKFLOW.md#changelog)
+
 
 ## Legal Notice
 > TODO Verify and eventually change!
