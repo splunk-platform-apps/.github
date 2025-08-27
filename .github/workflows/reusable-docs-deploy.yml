@@ -1,7 +1,11 @@
 name: Deploy Docusaurus to GitHub Pages
 
 on:
-  workflow_call
+  workflow_call:
+    inputs:
+        repo_name:
+          required: true
+          type: string
 
 permissions:
   contents: read # to successfully checkout repo
@@ -25,6 +29,12 @@ jobs:
         run: npm ci
       - name: Build website
         run: npm run build
+
+      # Fix to deploy a project site with gh action
+      - name: Move build into repo_name folder
+        run: |
+          mkdir -p build/${{ inputs.repo_name }}
+          mv build/* build/${{ inputs.repo_name }}/
 
       - name: Upload Build Artifact
         uses: actions/upload-pages-artifact@v3
