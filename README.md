@@ -8,7 +8,7 @@ This repository contains onboarding documents, the community health files, workf
 Please see the `.github` folder for the following docs:
 
  - [Contributing guide](.github/CONTRIBUTING.md)
- - [PR template](.github/PULL_REQUEST_TEMPLATE)
+ - [PR template](.github/PULL_REQUEST_TEMPLATE/pull_request_template.md)
  - [Issue templates](.github/ISSUE_TEMPLATE)
 
 The `workflow-templates` folder contains the [GitHub Action](https://docs.github.com/en/actions)
@@ -16,8 +16,8 @@ workflow files for the common CI workflows used by our app repos.
 
 The `actions` folder contains the GitHub actions available for usage into CI workflows used by our app repos:
 
-- :wip: [Gold Standard Assessment](./actions/goldstandard/README.md)
-- :wip: [Splunk App Detector](./actions/splunk-apps-detector/README.md)
+- :construction: [Gold Standard Assessment](./actions/goldstandard/README.md)
+- :construction: [Splunk App Detector](./actions/splunk-apps-detector/README.md)
 
 ## Support
 Did we miss anything?
