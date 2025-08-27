@@ -10,7 +10,7 @@ body:
   - type: textarea
     attributes:
       label: The name of the new component you are proposing
-      description: You can use this information later to create a README for your component.
+      description: Name of your Splunk App / Add-On in compliance with Splunk [App Naming Convention](https://github.com/splunk-platform-apps/.github/blob/main/.github/CONVENTIONS.md#app-naming-convention)
     validations:
       required: true
   - type: input
