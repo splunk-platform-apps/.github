@@ -8,12 +8,14 @@ body:
       value: |
         Thanks for your interest in contributing your component!
   - type: textarea
+    id: component_name
     attributes:
       label: The name of the new component you are proposing
       description: Name of your Splunk App / Add-On in compliance with Splunk [App Naming Convention](https://github.com/splunk-platform-apps/.github/blob/main/.github/CONVENTIONS.md#app-naming-convention)
     validations:
       required: true
   - type: input
+    id: code_owners
     attributes:
       label: Code Owner(s)
       description: A code owner is responsible for supporting the component, including triaging issues, reviewing PRs, and submitting bug fixes. List one (or more) people who are willing to take on this role.
@@ -21,6 +23,7 @@ body:
     validations:
       required: true
   - type: dropdown
+    id: framework_tools
     attributes:
       label: Framework and Tools Used
       description: Which framework are you planning to use to build your app?
@@ -30,12 +33,14 @@ body:
     validations:
       required: true
   - type: textarea
+    id: integration
     attributes:
       label: Integration
       description: The technology that your app will integrate with
     validations:
       required: true
   - type: textarea
+    id: about
     attributes:
       label: About
       description: Description of what the app does. Include details such as the component's goals and scope.
