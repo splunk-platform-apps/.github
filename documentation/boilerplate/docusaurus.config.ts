@@ -17,12 +17,12 @@ const config: Config = {
   url: 'https://splunk-platform-apps.github.io',
   // Set the /<baseUrl>/ pathname under which your site is served
   // For GitHub pages deployment, it is often '/<projectName>/'
-  baseUrl: '/',
+  baseUrl: '/' + repo_name + '/',
 
   // GitHub pages deployment config.
   // If you aren't using GitHub pages, you don't need these.
   organizationName: 'splunk-platform-apps',
-  projectName: 'splunk-platform-apps.github.io',
+  projectName: repo_name,
   trailingSlash: false,
   onBrokenLinks: 'throw',
   onBrokenMarkdownLinks: 'warn',
