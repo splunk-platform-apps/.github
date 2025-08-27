@@ -28,8 +28,8 @@ body:
       label: Framework and Tools Used
       description: Which framework are you planning to use to build your app?
       options:
-        - [UCC Framework](https://splunk.github.io/addonfactory-ucc-generator/)
-        - [Add-On Builder (AoB)](https://splunkbase.splunk.com/app/2962)
+        - 'UCC Framework (https://splunk.github.io/addonfactory-ucc-generator/)'
+        - 'Add-On Builder (AoB)(https://splunkbase.splunk.com/app/2962)'
     validations:
       required: true
   - type: textarea
