@@ -23,7 +23,7 @@ body:
   - type: dropdown
     attributes:
       label: Framework and Tools Used
-      description: Are you planning to use a framework or tool to build your app? If yes, which one? 
+      description: Which framework are you planning to use to build your app?
       options:
         - [UCC Framework](https://splunk.github.io/addonfactory-ucc-generator/)
         - [Add-On Builder (AoB)](https://splunkbase.splunk.com/app/2962)
