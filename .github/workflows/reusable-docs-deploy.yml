@@ -1,11 +1,7 @@
 name: Deploy Docusaurus to GitHub Pages
 
 on:
-  workflow_call:
-    inputs:
-        repo_name:
-          required: true
-          type: string
+  workflow_call
 
 permissions:
   contents: read # to successfully checkout repo
@@ -28,28 +24,17 @@ jobs:
       - name: Install dependencies
         run: npm ci
       - name: Build website
-        run: npm run build
-
-      # Fix to deploy a project site with gh action
-      - name: Move build into repo_name folder
+        id: build-website
         run: |
-          mkdir -p build/${{ inputs.repo_name }}
-          mv build/* build/${{ inputs.repo_name }}/
+          npm run build
+          echo "build_path=$(pwd)/build" >> $GITHUB_OUTPUT
 
-      - name: Upload Build Artifact
-        uses: actions/upload-pages-artifact@v3
+      - name: Deploy to gh-pages
+        uses: peaceiris/actions-gh-pages@v4
         with:
-          path: build
-
-  deploy:
-    name: Deploy to Github Pages
-    needs: build
-    # Deploy to the github-pages environment
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
-    runs-on: ubuntu-latest
-    steps:
-      - name: Deploy to GitHub Pages
-        id: deployment
-        uses: actions/deploy-pages@v4
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ${{ steps.build-website.outputs.build-path }}
+          publish_branch: gh-pages
+          user_name: github-actions
+          user_email: github-actions@github.com
+          keep_files: true
