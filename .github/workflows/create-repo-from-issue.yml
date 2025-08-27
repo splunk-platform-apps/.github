@@ -1,0 +1,53 @@
+name: Create Repo from Issue
+
+on:
+  issues:
+    types: [opened]
+
+permissions:
+  contents: read
+  issues: write
+
+jobs:
+  handle-issue:
+    runs-on: ubuntu-latest
+    steps:
+      # Paso opcional para ver el payload completo en los logs
+      - name: Debug payload
+        run: echo '${{ toJson(github.event.issue) }}'
+
+      # Exportar los valores del form_data a outputs del step
+      - name: Export form fields
+        id: fields
+        run: |
+          echo "component_name=${{ github.event.issue.form_data.component_name }}" >> $GITHUB_OUTPUT
+          echo "framework_tools=${{ github.event.issue.form_data.framework_tools }}" >> $GITHUB_OUTPUT
+          echo "integration=${{ github.event.issue.form_data.integration }}" >> $GITHUB_OUTPUT
+          echo "about=${{ github.event.issue.form_data.about }}" >> $GITHUB_OUTPUT
+          echo "code_owners=${{ github.event.issue.form_data.code_owners }}" >> $GITHUB_OUTPUT
+
+      # Usar los valores en otros pasos
+      - name: Use fields
+        run: |
+          echo "Component: ${{ steps.fields.outputs.component_name }}"
+          echo "Framework: ${{ steps.fields.outputs.framework_tools }}"
+          echo "Integration: ${{ steps.fields.outputs.integration }}"
+          echo "About: ${{ steps.fields.outputs.about }}"
+          echo "Owners: ${{ steps.fields.outputs.code_owners }}"
+
+      # Asignar automáticamente a los code owners (si hay)
+      - name: Assign code owners
+        if: github.event.action == 'opened'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const ownersRaw = `${{ steps.fields.outputs.code_owners }}`;
+            const owners = ownersRaw.split(/[, \n]+/).filter(Boolean);
+            if (owners.length) {
+              await github.rest.issues.addAssignees({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: context.issue.number,
+                assignees: owners,
+              });
+            }
