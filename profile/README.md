@@ -4,7 +4,11 @@
 
 <p align="center">
   <a href="https://github.com/splunk-platform-apps">
-    <img src="https://github.com/splunk-platform-apps/.github/blob/main/.github/images/devrel.jpg" alt="OpenTelemetry logo">
+    <picture>
+      <source media="(prefers-color-scheme: dark)" srcset="https://github.com/splunk-platform-apps/.github/blob/main/.github/images/devrel-logo-dark.png">
+      <source media="(prefers-color-scheme: light)" srcset="https://github.com/splunk-platform-apps/.github/blob/main/.github/images/devrel-logo-light.png">
+      <img alt="Splunk DevRel logo" src="devrel-logo-light.png">
+    </picture>
   </a>
 </p>
 
