@@ -21,7 +21,6 @@ body:
     validations:
       required: true
   - type: dropdown
-    id: frameworks
     attributes:
       label: Framework and Tools Used
       description: Are you planning to use a framework or tool to build your app? If yes, which one? 
