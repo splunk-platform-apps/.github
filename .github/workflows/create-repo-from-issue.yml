@@ -12,13 +12,17 @@ jobs:
   handle-issue:
     runs-on: ubuntu-latest
     steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        
       - name: Debug payload
         run: echo '${{ toJson(github.event.issue) }}'
         
       - uses: stefanbuck/github-issue-parser@v3
         id: issue-parser
         with:
-          template-path: .github/ISSUE_TEMPLATE/component_request.yaml
+          issue-body: ${{ github.event.issue.body }}
+          template-path: .github/.github/ISSUE_TEMPLATE/component_request.yaml
 
       - run: echo '${{ steps.issue-parser.outputs.jsonString }}' > issue-form.json
 
