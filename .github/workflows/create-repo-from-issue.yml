@@ -15,9 +15,6 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
         
-      - name: Debug payload
-        run: echo '${{ toJson(github.event.issue) }}'
-        
       - uses: stefanbuck/github-issue-parser@v3
         id: issue-parser
         with:
@@ -27,3 +24,28 @@ jobs:
       - run: echo '${{ steps.issue-parser.outputs.jsonString }}' > issue-form.json
 
       - run: cat issue-form.json
+
+      # Setup Python + Cookiecutter
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install cookiecutter
+        run: pip install cookiecutter
+
+      # Run Cookiecutter with --extra-context (NO prompts)
+      # Replace TEMPLATE_REPO and TEMPLATE_REF to your template
+      - name: Generate project from template
+        run: |
+          mkdir -p generated
+          cookiecutter \
+            gh:splunk-platform-apps/template-addon-cookie-cutter \
+            --checkout main \
+            --no-input \
+            --output-dir generated \
+            --extra-context '${{ steps.issue-parser.outputs.jsonString }}'
+
+      # See generated folder content
+      - name: See generated folder content
+        run: |
+          ls -la generated
