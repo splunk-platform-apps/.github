@@ -33,17 +33,29 @@ jobs:
       - name: Install cookiecutter
         run: pip install cookiecutter
 
-      # Run Cookiecutter with --extra-context (NO prompts)
-      # Replace TEMPLATE_REPO and TEMPLATE_REF to your template
+      # Run Cookiecutter with extra context from JSON
       - name: Generate project from template
         run: |
           mkdir -p generated
+          
+          # Extract values from JSON for cookiecutter
+          COMPONENT_NAME=$(echo '${{ steps.issue-parser.outputs.jsonString }}' | jq -r '.component_name')
+          CODE_OWNERS=$(echo '${{ steps.issue-parser.outputs.jsonString }}' | jq -r '.code_owners')
+          FRAMEWORK_TOOLS=$(echo '${{ steps.issue-parser.outputs.jsonString }}' | jq -r '.framework_tools')
+          INTEGRATION=$(echo '${{ steps.issue-parser.outputs.jsonString }}' | jq -r '.integration')
+          ABOUT=$(echo '${{ steps.issue-parser.outputs.jsonString }}' | jq -r '.about')
+          
+          # Run cookiecutter with individual key=value pairs
           cookiecutter \
             https://github.com/splunk-platform-apps/template-addon-cookie-cutter.git \
             --checkout main \
             --no-input \
             --output-dir generated \
-            --extra-context '${{ steps.issue-parser.outputs.jsonString }}'
+            component_name="$COMPONENT_NAME" \
+            code_owners="$CODE_OWNERS" \
+            framework_tools="$FRAMEWORK_TOOLS" \
+            integration="$INTEGRATION" \
+            about="$ABOUT"
 
       # See generated folder content
       - name: See generated folder content
