@@ -101,6 +101,41 @@ On each tag push, the following checks will be executed before releasing a new v
 - **Sanity Tests**: Validates app functionality for the Splunk Cloud environment via AppInspect CLI
 - **Release Notes Validation**: Checks whether the `CHANGELOG.md` file has been populated with latest info - [guidelines](https://github.com/splunk-platform-apps/.github/blob/main/.github/DEV_WORKFLOW.md#changelog)
 
+## Code Owners
+To ensure code that lives in the repositories is not abandoned, all Splunk Apps and Add-Ons added are required to have a code owner. A code owner is responsible for the Splunk App / Add-On hosted within a repository.
+This status is identified in the CODEOWNERS file. That responsibility includes maintaining the app, triaging and responding to issues, reviewing pull requests and releasing the app itself as described [below](#responsibilities).
+
+### Requirements
+
+To become a code owner, you will need to have **good working knowledge of the code you are sponsoring and any project that that code instruments or is based on**.
+
+### Responsibilities
+
+As a code owner you will be responsible for the following:
+
+- You will be expected to review any Pull Requests or Issues created that relate to this app.
+- You will be responsible for the stability and versioning compliance of the app.
+- You will be expected to provide and keep the documentation of the app up to date.
+- You will be responsible for releasing new versions of the app.
+
+
+### How to become a Code Owner
+
+Code ownership **must** be specified when a new repository is requested by opening [an Issue](https://github.com/splunk-platform-apps/.github/issues/new?template=component_request.yaml).
+
+Multiple code owners can be specified as individual GitHub users.
+
+### Removing / Transferring Code Ownership
+
+Code owners are expected to remove their ownership if they cannot fulfill their responsibilities anymore. To do so, open [an Issue](https://github.com/splunk-platform-apps/.github/issues/new?title=Edit+Code+Ownership&body=Please+transfer+ownership+of+repo+add_repo_name+to+add_new_user) requesting to either:
+- Transfer the code ownership to given user(s),
+- Remove the code ownership.
+
+Do not forget to provide the name of the repository the request is referring to.
+
+:point_right: When a repository has no remaining code owners, the repository will be archived by the organization administrators.
+
+:point_right: It is at the discretion of the organization administrators to decide if a repository shall be archived in case of inactivity greater than 1 year, during which time there are active Issues or Pull Requests to address.
 
 ## Legal Notice
 > TODO Verify and eventually change!
