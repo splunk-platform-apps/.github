@@ -39,7 +39,7 @@ jobs:
         run: |
           mkdir -p generated
           cookiecutter \
-            gh:splunk-platform-apps/template-addon-cookie-cutter \
+            https://github.com/splunk-platform-apps/template-addon-cookie-cutter.git \
             --checkout main \
             --no-input \
             --output-dir generated \
