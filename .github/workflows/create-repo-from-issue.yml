@@ -47,8 +47,7 @@ jobs:
           
           # Run cookiecutter with individual key=value pairs
           cookiecutter \
-            https://github.com/splunk-platform-apps/template-addon-cookie-cutter.git \
-            --checkout main \
+            ./actions/template-addon-cookie-cutter \
             --no-input \
             --output-dir generated \
             component_name="$COMPONENT_NAME" \
@@ -60,4 +59,6 @@ jobs:
       # See generated folder content
       - name: See generated folder content
         run: |
-          ls -la generated
+          cd generated
+          ls -la
+          cat README.md
