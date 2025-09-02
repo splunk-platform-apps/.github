@@ -59,6 +59,7 @@ jobs:
       # See generated folder content
       - name: See generated folder content
         run: |
-          cd generated
+          COMPONENT_NAME=$(echo '${{ steps.issue-parser.outputs.jsonString }}' | jq -r '.component_name')
+          cd generated/"$COMPONENT_NAME"
           ls -la
           cat README.md
