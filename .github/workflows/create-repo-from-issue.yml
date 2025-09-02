@@ -1,8 +1,8 @@
 name: Create Repo from Issue
 
 on:
-  issues:
-    types: [opened]
+  issue_comment:
+    types: [created]
 
 permissions:
   contents: read
@@ -10,6 +10,10 @@ permissions:
 
 jobs:
   handle-issue:
+    # Only run if comment is from authorized users and contains the trigger command
+    if: |
+      contains(fromJSON('["joseacunacarrera", "user2", "user3"]'), github.event.comment.user.login) &&
+      contains(github.event.comment.body, '/generate_repo')
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
