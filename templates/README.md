@@ -1,3 +1,0 @@
-### Templates
-
-This folder contains templates used in this organizations repositories to generate issues and pull request's for components. All new component repo's will be created with these templates in their `.github` folder. The goal of this is to give a consistent experience throughout the different projects in the organisation. Feel free to modify them to fit your projects needs, or if you think theres an improvement that could benefit everyone open an issue and we'll change the copies in here.
