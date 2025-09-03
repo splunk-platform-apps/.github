@@ -66,4 +66,73 @@ jobs:
           COMPONENT_NAME=$(echo '${{ steps.issue-parser.outputs.jsonString }}' | jq -r '.component_name')
           cd generated/"$COMPONENT_NAME"
           ls -la
-          cat README.md
+          echo "Generated project: $COMPONENT_NAME"
+
+      # Extract component name for repository creation
+      - name: Set component name
+        id: component-name
+        run: |
+          COMPONENT_NAME=$(echo '${{ steps.issue-parser.outputs.jsonString }}' | jq -r '.component_name')
+          echo "component_name=$COMPONENT_NAME" >> $GITHUB_OUTPUT
+          echo "Will create repository: splunk-platform-apps/$COMPONENT_NAME"
+
+      # Check if repository already exists
+      - name: Check if repository exists
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          REPO_NAME="${{ steps.component-name.outputs.component_name }}"
+          echo "Checking if repository splunk-platform-apps/$REPO_NAME exists..."
+          
+          if gh repo view splunk-platform-apps/$REPO_NAME &>/dev/null; then
+            echo "Repository splunk-platform-apps/$REPO_NAME already exists!"
+            echo "Please choose a different component name or delete the existing repository."
+            exit 1
+          else
+            echo "Repository name is available: splunk-platform-apps/$REPO_NAME"
+          fi
+
+      # Create new GitHub repository
+      - name: Create GitHub repository
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          REPO_NAME="${{ steps.component-name.outputs.component_name }}"
+          echo "Creating repository: splunk-platform-apps/$REPO_NAME"
+          
+          gh repo create "splunk-platform-apps/$REPO_NAME" \
+            --public \
+            --description "Splunk Add-On: $REPO_NAME - Generated from cookiecutter template" \
+            --clone
+          
+          echo "Repository created successfully!"
+
+      # Initialize and push generated content
+      - name: Push generated content to new repository
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          REPO_NAME="${{ steps.component-name.outputs.component_name }}"
+          
+          echo "Preparing to push generated content to splunk-platform-apps/$REPO_NAME"
+          
+          # Navigate to generated project
+          cd generated/"$REPO_NAME"
+          
+          # Initialize git repository
+          git init
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          
+          # Add remote origin
+          git remote add origin https://github.com/splunk-platform-apps/$REPO_NAME.git
+          
+          # Create commit message
+          CODE_OWNERS=$(echo '${{ steps.issue-parser.outputs.jsonString }}' | jq -r '.code_owners')
+          FRAMEWORK=$(echo '${{ steps.issue-parser.outputs.jsonString }}' | jq -r '.framework_tools')
+          INTEGRATION=$(echo '${{ steps.issue-parser.outputs.jsonString }}' | jq -r '.integration')
+          ABOUT=$(echo '${{ steps.issue-parser.outputs.jsonString }}' | jq -r '.about')
+          
+          # Add all files and commit
+          git add .
+          git commit -m "Initial commit: Generated from cookiecutter template"
