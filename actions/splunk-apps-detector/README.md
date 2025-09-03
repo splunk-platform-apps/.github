@@ -1,7 +1,7 @@
 # Action for Splunk App Detector
 This action aims reading the content of your source files and providing a report on the detected knowledge objects and extensions.
 
-> This is a WIP and content may change.
+:construction: **This is a WIP and content may change** :construction:
 
 ## Usage
 Use the action within your own Github worflows as shown below
