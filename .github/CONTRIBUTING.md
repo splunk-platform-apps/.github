@@ -3,7 +3,9 @@
 Thank you for considering spending your time contributing. Whether you're interested in bug-hunting, documentation, or creating entirely new apps, this document will help and guide you through the process.
 
 If you've stumbled upon the site but don't know who or what we are, please check out the links below:
-> TODO add links
+- [Splunk!](https://www.splunk.com/)
+- [Splunk Developer Program](https://dev.splunk.com/)
+- Info on [Splunk Apps and Add-ons](https://help.splunk.com/en/splunk-enterprise/administer/admin-manual/9.3/meet-splunk-apps/apps-and-add-ons)
 
 ---
 
@@ -138,9 +140,7 @@ Do not forget to provide the name of the repository the request is referring to.
 :point_right: It is at the discretion of the organization administrators to decide if a repository shall be archived in case of inactivity greater than 1 year, during which time there are active Issues or Pull Requests to address.
 
 ## Legal Notice
-> TODO Verify and eventually change!
-
-By submitting a Contribution to this Work, You agree that Your Contribution is made subject to the primary license in the Apache 2.0 license (https://www.apache.org/licenses/LICENSE-2.0.txt). In addition, You represent that: (i) You are the copyright owner of the Contribution or (ii) You have the requisite rights to make the Contribution.
+By submitting a Contribution to this Work, You agree that Your Contribution is made subject to the primary license in the Apache 2.0 license (found [here](https://www.apache.org/licenses/LICENSE-2.0.txt)). In addition, You represent that: (i) You are the copyright owner of the Contribution or (ii) You have the requisite rights to make the Contribution.
 
 ### Definitions:
 

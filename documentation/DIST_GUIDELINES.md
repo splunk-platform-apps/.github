@@ -9,8 +9,8 @@ Modify `package.json` to reflect the targeted project:
 
 ```json:my-website-tutorial/package.json
 {
-  "name": "your-project-name", // TODO: Replace with the actual app name
-  "version": "1.0.0", // TODO: Replace with the actual app version
+  "name": "your-project-name", // Replace with your actual app name
+  "version": "1.0.0", // Replace with your actual app version
   "private": true,
   // ... rest remains the same
 }

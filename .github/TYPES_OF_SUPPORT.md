@@ -1,7 +1,5 @@
 # Community, Developer, and Splunk Supported Apps
 
->TODO verify this content
-
 You may have noticed that Splunk Apps can be community, developer, or Splunk-supported. This document explains what each level of support means.
 
 App Tests  | Community Supported | Developer Supported
