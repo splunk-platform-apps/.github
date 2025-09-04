@@ -10,7 +10,7 @@ permissions:
 
 jobs:
   handle-issue:
-    # Only run if comment is from authorized users and contains the trigger command
+    environment: create-repo-from-issue
     if: |
       contains(fromJSON('["joseacunacarrera", "user2", "user3"]'), github.event.comment.user.login) &&
       contains(github.event.comment.body, '/generate_repo')
@@ -18,7 +18,20 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
-        
+
+      # <int a GitHub App installation token scoped to the ORG
+      - name: Create app installation token (org scope)
+        id: app-token
+        uses: actions/create-github-app-token@v2
+        with:
+          app-id: ${{ vars.APP_ID }}
+          private-key: ${{ secrets.PRIVATE_KEY }}
+          owner: splunk-platform-apps
+          # Explicitly request only what we need (least privilege):
+          permission-administration: write
+          permission-contents: read
+
+      # (rest of your steps unchanged up to repo creation)
       - uses: stefanbuck/github-issue-parser@v3
         id: issue-parser
         with:
@@ -26,10 +39,8 @@ jobs:
           template-path: .github/ISSUE_TEMPLATE/component_request.yaml
 
       - run: echo '${{ steps.issue-parser.outputs.jsonString }}' > issue-form.json
-
       - run: cat issue-form.json
 
-      # Setup Python + Cookiecutter
       - name: Setup Python
         uses: actions/setup-python@v5
         with:
@@ -37,33 +48,84 @@ jobs:
       - name: Install cookiecutter
         run: pip install cookiecutter
 
-      # Run Cookiecutter with extra context from JSON
       - name: Generate project from template
         run: |
           mkdir -p generated
-          
-          # Extract values from JSON for cookiecutter
           COMPONENT_NAME=$(echo '${{ steps.issue-parser.outputs.jsonString }}' | jq -r '.component_name')
           CODE_OWNERS=$(echo '${{ steps.issue-parser.outputs.jsonString }}' | jq -r '.code_owners')
           FRAMEWORK_TOOLS=$(echo '${{ steps.issue-parser.outputs.jsonString }}' | jq -r '.framework_tools')
           INTEGRATION=$(echo '${{ steps.issue-parser.outputs.jsonString }}' | jq -r '.integration')
           ABOUT=$(echo '${{ steps.issue-parser.outputs.jsonString }}' | jq -r '.about')
-          
-          # Run cookiecutter with individual key=value pairs
-          cookiecutter \
-            ./actions/template-addon-cookie-cutter \
-            --no-input \
-            --output-dir generated \
+          cookiecutter ./actions/template-addon-cookie-cutter --no-input --output-dir generated \
             component_name="$COMPONENT_NAME" \
             code_owners="$CODE_OWNERS" \
             framework_tools="$FRAMEWORK_TOOLS" \
             integration="$INTEGRATION" \
             about="$ABOUT"
 
-      # See generated folder content
       - name: See generated folder content
         run: |
           COMPONENT_NAME=$(echo '${{ steps.issue-parser.outputs.jsonString }}' | jq -r '.component_name')
           cd generated/"$COMPONENT_NAME"
           ls -la
-          cat README.md
+          echo "Generated project: $COMPONENT_NAME"
+
+      - name: Set component name
+        id: component-name
+        run: |
+          COMPONENT_NAME=$(echo '${{ steps.issue-parser.outputs.jsonString }}' | jq -r '.component_name')
+          echo "component_name=$COMPONENT_NAME" >> $GITHUB_OUTPUT
+          echo "Will create repository: splunk-platform-apps/$COMPONENT_NAME"
+
+      # Use the App token for all gh/api calls from here on
+      - name: Check if repository exists
+        env:
+          GH_TOKEN: ${{ steps.app-token.outputs.token }}
+        run: |
+          REPO_NAME="${{ steps.component-name.outputs.component_name }}"
+          echo "Checking if repository splunk-platform-apps/$REPO_NAME exists..."
+          if gh repo view splunk-platform-apps/$REPO_NAME &>/dev/null; then
+            echo "Repository splunk-platform-apps/$REPO_NAME already exists!"
+            exit 1
+          else
+            echo "Repository name is available: splunk-platform-apps/$REPO_NAME"
+          fi
+
+      - name: Create GitHub repository (org)
+        env:
+          GH_TOKEN: ${{ steps.app-token.outputs.token }}
+        run: |
+          REPO_NAME="${{ steps.component-name.outputs.component_name }}"
+          echo "Creating repository: splunk-platform-apps/$REPO_NAME"
+          gh api -X POST "orgs/splunk-platform-apps/repos" \
+            -f name="$REPO_NAME" \
+            -f private=false \
+            -f description="Splunk Add-On: $REPO_NAME - Generated from cookiecutter template"
+          echo "Repository created successfully!"
+
+      # Push generated content using HTTPS with token (no gh --clone needed)
+      - name: Push generated content to new repository
+        env:
+          GH_TOKEN: ${{ steps.app-token.outputs.token }}
+        run: |
+          REPO_NAME="${{ steps.component-name.outputs.component_name }}"
+          cd generated/"$REPO_NAME"
+
+          git init
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          
+          # Add remote origin
+          git remote add origin https://github.com/splunk-platform-apps/$REPO_NAME.git
+          
+          # Create commit message
+          CODE_OWNERS=$(echo '${{ steps.issue-parser.outputs.jsonString }}' | jq -r '.code_owners')
+          FRAMEWORK=$(echo '${{ steps.issue-parser.outputs.jsonString }}' | jq -r '.framework_tools')
+          INTEGRATION=$(echo '${{ steps.issue-parser.outputs.jsonString }}' | jq -r '.integration')
+          ABOUT=$(echo '${{ steps.issue-parser.outputs.jsonString }}' | jq -r '.about')
+          
+          # Add all files and commit
+          git add .
+          git commit -m "Initial commit: Generated from cookiecutter template"
+          git branch -M main
+          git push -u origin main

@@ -78,9 +78,5 @@ Documentation linting report example:
 | `score` | The score given to the TA |
 | `min-score` | Minimum score accepted for Gold Standard compatibility |
 
-## Contributing
-TODO
-
-
 ## References
 * [Splunk Gold Standard](https://splunk.atlassian.net/wiki/spaces/PROD/pages/1078297761617/Technology+Add-ons+Gold+Standard)
