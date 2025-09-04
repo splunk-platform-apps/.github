@@ -19,19 +19,6 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      # <int a GitHub App installation token scoped to the ORG
-      - name: Create app installation token (org scope)
-        id: app-token
-        uses: actions/create-github-app-token@v2
-        with:
-          app-id: ${{ vars.APP_ID }}
-          private-key: ${{ secrets.PRIVATE_KEY }}
-          owner: splunk-platform-apps
-          # Explicitly request only what we need (least privilege):
-          permission-administration: write
-          permission-contents: read
-
-      # (rest of your steps unchanged up to repo creation)
       - uses: stefanbuck/github-issue-parser@v3
         id: issue-parser
         with:
@@ -80,7 +67,7 @@ jobs:
       # Use the App token for all gh/api calls from here on
       - name: Check if repository exists
         env:
-          GH_TOKEN: ${{ steps.app-token.outputs.token }}
+          GH_TOKEN: ${{ secrets.PRIVATE_KEY }}
         run: |
           REPO_NAME="${{ steps.component-name.outputs.component_name }}"
           echo "Checking if repository splunk-platform-apps/$REPO_NAME exists..."
@@ -93,7 +80,7 @@ jobs:
 
       - name: Create GitHub repository (org)
         env:
-          GH_TOKEN: ${{ steps.app-token.outputs.token }}
+          GH_TOKEN: ${{ secrets.PRIVATE_KEY }}
         run: |
           REPO_NAME="${{ steps.component-name.outputs.component_name }}"
           echo "Creating repository: splunk-platform-apps/$REPO_NAME"
@@ -106,7 +93,7 @@ jobs:
       # Push generated content using HTTPS with token (no gh --clone needed)
       - name: Push generated content to new repository
         env:
-          GH_TOKEN: ${{ steps.app-token.outputs.token }}
+          GH_TOKEN: ${{ secrets.PRIVATE_KEY }}
         run: |
           REPO_NAME="${{ steps.component-name.outputs.component_name }}"
           cd generated/"$REPO_NAME"
