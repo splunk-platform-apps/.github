@@ -18,8 +18,8 @@ body:
     id: code_owners
     attributes:
       label: Code Owner(s)
-      description: A code owner is responsible for supporting the component, including triaging issues, reviewing PRs, and submitting bug fixes. List one (or more) people who are willing to take on this role.
-      placeholder: e.g. user1@example.com,user2@example.com
+      description: A code owner is responsible for supporting the component, including triaging issues, reviewing PRs, and submitting bug fixes. List one (or more) GitHub individual users who are willing to take on this role.
+      placeholder: e.g. @gh-user1 @gh-user2 @another-user
     validations:
       required: true
   - type: dropdown
