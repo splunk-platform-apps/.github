@@ -2,7 +2,7 @@ name: Bug Report
 description: File a bug report.
 title: "[Bug]: "
 labels: ["bug", "triage"]
-assignees: [{{ cookiecutter.code_owners | join(", ") }}]
+assignees: [{{ cookiecutter.code_owners }}]
 body:
   - type: markdown
     attributes:
