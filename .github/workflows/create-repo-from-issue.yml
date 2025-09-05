@@ -60,12 +60,13 @@ jobs:
         run: |
           mkdir -p generated
           COMPONENT_NAME=$(echo '${{ steps.issue-parser.outputs.jsonString }}' | jq -r '.component_name')
-          CODE_OWNERS=$(echo '${{ steps.issue-parser.outputs.jsonString }}' | jq -r '.code_owners') FRAMEWORK_TOOLS=$(echo '${{ steps.issue-parser.outputs.jsonString }}' | jq -r '.framework_tools')
+          CODE_OWNERS=$(echo '${{ steps.issue-parser.outputs.jsonString }}' | jq -r '.code_owners') 
+          FRAMEWORK_TOOLS=$(echo '${{ steps.issue-parser.outputs.jsonString }}' | jq -r '.framework_tools')
           INTEGRATION=$(echo '${{ steps.issue-parser.outputs.jsonString }}' | jq -r '.integration')
           ABOUT=$(echo '${{ steps.issue-parser.outputs.jsonString }}' | jq -r '.about')
           cookiecutter ./actions/template-addon-cookie-cutter --no-input --output-dir generated \
             component_name="$COMPONENT_NAME" \
-            code_owners="$CODE_OWNERS" \
+            code_owners_raw="$CODE_OWNERS" \
             framework_tools="$FRAMEWORK_TOOLS" \
             integration="$INTEGRATION" \
             about="$ABOUT"
