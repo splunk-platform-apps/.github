@@ -87,7 +87,8 @@ jobs:
           gh api -X POST "orgs/splunk-platform-apps/repos" \
             -f name="$REPO_NAME" \
             -f private=false \
-            -f description="Splunk Add-On: $REPO_NAME - Generated from cookiecutter template"
+            -f description="Splunk Add-On: $REPO_NAME - Generated from cookiecutter template" \
+            -f visibility=public
           echo "Repository created successfully!"
 
       # Push generated content using HTTPS with token (no gh --clone needed)
@@ -103,7 +104,7 @@ jobs:
           git config user.email "github-actions[bot]@users.noreply.github.com"
           
           # Add remote origin
-          git remote add origin https://github.com/splunk-platform-apps/$REPO_NAME.git
+          git remote add origin https://x-access-token:${GH_TOKEN}@github.com/splunk-platform-apps/$REPO_NAME.git
           
           # Create commit message
           CODE_OWNERS=$(echo '${{ steps.issue-parser.outputs.jsonString }}' | jq -r '.code_owners')
