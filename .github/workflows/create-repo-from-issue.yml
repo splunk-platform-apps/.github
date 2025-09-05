@@ -75,7 +75,7 @@ jobs:
           ABOUT=$(echo '${{ steps.issue-parser.outputs.jsonString }}' | jq -r '.about')
           cookiecutter ./actions/template-addon-cookie-cutter --no-input --output-dir generated \
             component_name="$COMPONENT_NAME" \
-            code_owners="$CODE_OWNERS" \
+            code_owners="${CODE_OWNERS[@]}" \
             framework_tools="$FRAMEWORK_TOOLS" \
             integration="$INTEGRATION" \
             about="$ABOUT"
