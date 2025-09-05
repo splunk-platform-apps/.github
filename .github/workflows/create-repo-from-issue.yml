@@ -68,7 +68,7 @@ jobs:
           elif [[ "$code_owners_raw" == *","* ]]; then
             IFS=',' read -ra CODE_OWNERS <<< "$code_owners_raw"
           else
-            CODE_OWNERS=$code_owners_raw
+            CODE_OWNERS=($code_owners_raw)
           fi
           FRAMEWORK_TOOLS=$(echo '${{ steps.issue-parser.outputs.jsonString }}' | jq -r '.framework_tools')
           INTEGRATION=$(echo '${{ steps.issue-parser.outputs.jsonString }}' | jq -r '.integration')
