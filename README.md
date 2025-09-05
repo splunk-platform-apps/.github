@@ -8,7 +8,7 @@ This repository contains onboarding documents, the community health files, workf
 Please see the `.github` folder for the following docs:
 
  - [Contributing guide](.github/CONTRIBUTING.md)
- - [PR template](.github/PULL_REQUEST_TEMPLATE/pull_request_template.md)
+ - [PR template](.github/pull_request_template.md)
  - [Issue templates](.github/ISSUE_TEMPLATE)
 
 The `workflow-templates` folder contains the [GitHub Action](https://docs.github.com/en/actions)
