@@ -11,13 +11,34 @@ permissions:
 jobs:
   handle-issue:
     environment: create-repo-from-issue
-    if: |
-      contains(fromJSON('["joseacunacarrera", "shalper2", "edro15"]'), github.event.comment.user.login) &&
-      contains(github.event.comment.body, '/generate_repo')
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+
+      # Check if user is member of authorized team
+      - uses: tspascoal/get-user-teams-membership@v3
+        id: checkUserMember
+        with:
+          username: ${{ github.event.comment.user.login }}
+          team: 'admins'
+          GITHUB_TOKEN: ${{ secrets.PRIVATE_KEY }}
+
+      # Check authorization and command
+      - name: Verify authorization and command
+        run: |
+          if [ "${{ steps.checkUserMember.outputs.isTeamMember }}" != "true" ]; then
+            echo "User ${{ github.event.comment.user.login }} is not authorized to trigger this workflow"
+            echo "Only members of the devrel-team can use the /generate_repo command"
+            exit 1
+          fi
+          
+          if ! echo '${{ github.event.comment.body }}' | grep -q '/generate_repo'; then
+            echo "Comment does not contain the required '/generate_repo' command"
+            exit 1
+          fi
+          
+          echo "User authorized and command verified"
 
       - uses: stefanbuck/github-issue-parser@v3
         id: issue-parser
