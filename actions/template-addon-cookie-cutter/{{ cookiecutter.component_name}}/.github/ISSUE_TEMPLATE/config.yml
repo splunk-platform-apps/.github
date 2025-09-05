@@ -1,7 +1,7 @@
 blank_issues_enabled: false
 contact_links:
   - name: Documentation
-    url: https://splunk-platform-apps.github.io/<add_repo_name>/docs
+    url: https://splunk-platform-apps.github.io/{{ cookiecutter.component_name }}/docs
     about: Please check our documentation before opening an issue.
   - name: Community Forum
     url: https://splunkcommunity.slack.com/archives/C04DC8JJ6
