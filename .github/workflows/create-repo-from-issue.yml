@@ -40,12 +40,14 @@ jobs:
           mkdir -p generated
           COMPONENT_NAME=$(echo '${{ steps.issue-parser.outputs.jsonString }}' | jq -r '.component_name')
           code_owners_raw=$(echo '${{ steps.issue-parser.outputs.jsonString }}' | jq -r '.code_owners')
-          if [[ "$code_owners_raw" == *" "* ]]; then
+          if [[ "$code_owners_raw" == *", "* ]]; then
+            IFS=', ' read -ra CODE_OWNERS <<< "$code_owners_raw"
+          elif [[ "$code_owners_raw" == *" "* ]]; then
             IFS=' ' read -ra CODE_OWNERS <<< "$code_owners_raw"
           elif [[ "$code_owners_raw" == *","* ]]; then
             IFS=',' read -ra CODE_OWNERS <<< "$code_owners_raw"
           else
-            CODE_OWNERS=""
+            CODE_OWNERS=$code_owners_raw
           fi
           FRAMEWORK_TOOLS=$(echo '${{ steps.issue-parser.outputs.jsonString }}' | jq -r '.framework_tools')
           INTEGRATION=$(echo '${{ steps.issue-parser.outputs.jsonString }}' | jq -r '.integration')
