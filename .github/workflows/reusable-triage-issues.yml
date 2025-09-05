@@ -10,7 +10,7 @@ on:
         required: true
         type: string
       issue_labels:
-        required: true`
+        required: true
         type: string
 
 permissions:
