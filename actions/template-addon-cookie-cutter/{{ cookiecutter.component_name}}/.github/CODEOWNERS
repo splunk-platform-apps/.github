@@ -1,4 +1,4 @@
-* @add-codeowner1-gh-handle @add-codeowner2-gh-handle
+* {{ cookiecutter.code_owners }}
 
 # Make CODEOWNERS file changes require admin approval
 /.github/CODEOWNERS @splunk-platform-apps/admins

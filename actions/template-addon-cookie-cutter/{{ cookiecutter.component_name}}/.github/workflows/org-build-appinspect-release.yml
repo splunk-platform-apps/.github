@@ -20,5 +20,4 @@ permissions:
 
 jobs:
   call-workflow:
-    if: ${{ '{{' }} github.repository {{ '}}' }} != 'splunk-platform-apps/template-addon'
     uses: splunk-platform-apps/.github/.github/workflows/reusable-build-appinspect-release.yml@1

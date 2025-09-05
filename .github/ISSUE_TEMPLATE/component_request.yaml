@@ -1,7 +1,7 @@
 name: New Application Repo
 description: Request to contribute a brand new app under a new repository! **NOTE** This component request form is a work in progress at present only Splunk add-ons are supported
 title: "New App: "
-labels: ["app", "new-app-request"]
+labels: ["repo-request"]
 body:
   - type: markdown
     attributes:
