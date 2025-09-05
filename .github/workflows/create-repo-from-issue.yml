@@ -29,7 +29,7 @@ jobs:
         run: |
           if [ "${{ steps.checkUserMember.outputs.isTeamMember }}" != "true" ]; then
             echo "User ${{ github.event.comment.user.login }} is not authorized to trigger this workflow"
-            echo "Only members of the devrel-team can use the /generate_repo command"
+            echo "Only members of the admins team can use the /generate_repo command"
             exit 1
           fi
           
