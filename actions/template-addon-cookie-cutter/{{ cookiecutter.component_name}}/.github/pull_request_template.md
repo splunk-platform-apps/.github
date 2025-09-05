@@ -1,4 +1,4 @@
-:point_right: Please ensure your pull request (PR) adheres to our [Contribution Guidelines](https://github.com/splunk-soar-connectors/.github/blob/main/.github/CONTRIBUTING.md#high-level-contribution-overview) :point_left:
+:point_right: Please ensure your pull request (PR) adheres to our [Contribution Guidelines](https://github.com/splunk-platform-apps/.github/blob/main/.github/CONTRIBUTING.md#high-level-contribution-overview) :point_left:
 
 ## Pull Request Checklist
 
