@@ -39,7 +39,14 @@ jobs:
         run: |
           mkdir -p generated
           COMPONENT_NAME=$(echo '${{ steps.issue-parser.outputs.jsonString }}' | jq -r '.component_name')
-          CODE_OWNERS=$(echo '${{ steps.issue-parser.outputs.jsonString }}' | jq -r '.code_owners')
+          code_owners_raw=$(echo '${{ steps.issue-parser.outputs.jsonString }}' | jq -r '.code_owners')
+          if [[ "$code_owners_raw" == *" "* ]]; then
+            IFS=' ' read -ra CODE_OWNERS <<< "$code_owners_raw"
+          elif [[ "$code_owners_raw" == *","* ]]; then
+            IFS=',' read -ra CODE_OWNERS <<< "$code_owners_raw"
+          else
+            CODE_OWNERS=""
+          fi
           FRAMEWORK_TOOLS=$(echo '${{ steps.issue-parser.outputs.jsonString }}' | jq -r '.framework_tools')
           INTEGRATION=$(echo '${{ steps.issue-parser.outputs.jsonString }}' | jq -r '.integration')
           ABOUT=$(echo '${{ steps.issue-parser.outputs.jsonString }}' | jq -r '.about')
