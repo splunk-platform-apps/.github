@@ -2,7 +2,7 @@ name: Feature Request
 description: File a new feature request.
 title: "[Feature]: "
 labels: ["enhancement"]
-assignees: [{{ cookiecutter.code_owners }}]
+assignees: {{ cookiecutter.code_owners_template }}
 body:
   - type: markdown
     attributes:
