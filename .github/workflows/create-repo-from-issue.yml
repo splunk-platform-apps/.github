@@ -12,7 +12,7 @@ jobs:
   handle-issue:
     environment: create-repo-from-issue
     if: |
-      contains(fromJSON('["joseacunacarrera", "user2", "user3"]'), github.event.comment.user.login) &&
+      contains(fromJSON('["joseacunacarrera", "shalper2", "edro15"]'), github.event.comment.user.login) &&
       contains(github.event.comment.body, '/generate_repo')
     runs-on: ubuntu-latest
     steps:
