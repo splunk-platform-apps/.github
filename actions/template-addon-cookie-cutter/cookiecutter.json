@@ -2,7 +2,7 @@
     "component_name": "The name of the new component you are proposing - Name of your Splunk App / Add-On in compliance with Splunk App Naming Convention",
     "code_owners_raw": "A code owner is responsible for supporting the component, including triaging issues, reviewing PRs, and submitting bug fixes. List one (or more) people who are willing to take on this role.",
     "code_owners": "{{ cookiecutter.code_owners_raw }}",
-    "code_owners_template": "[ {{ cookiecutter.code_owners_raw.replace(' ', ',').replace('@', '') }} ]",
+    "code_owners_template": "[{{ cookiecutter.code_owners_raw.replace(' ', ', ').replace('@', '') }}]",
     "framework_tools": "What framework are you planning to use to build your app?",
     "integration": "The technology that your app will integrate with",
     "about": "Description of what the app does. Include details such as the component's goals and scope."
