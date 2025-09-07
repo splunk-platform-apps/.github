@@ -21,9 +21,9 @@ Make sure you have a [GitHub Account](https://www.github.com)
 ## Project Details
 To successfully contribute, you should spend a little time familiarizing yourself with the following key topics.
 
-- [Coding & Conventions](.github/CONVENTIONS.md) - How we expect to see code formatted and apps named
-- [Various Types of Apps](.github/TYPES_OF_SUPPORT.md) - Definitions and differences
-- [Typical developer workflow](.github/DEV_WORKFLOW.md) - Configuring your dev environment
+- [Coding & Conventions](./CONVENTIONS.md) - How we expect to see code formatted and apps named
+- [Various Types of Apps](./TYPES_OF_SUPPORT.md) - Definitions and differences
+- [Typical developer workflow](./DEV_WORKFLOW.md) - Configuring your dev environment
 
 
 # High Level Contribution Overview
