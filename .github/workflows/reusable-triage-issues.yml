@@ -33,7 +33,9 @@ jobs:
         run: |
           # Convert input labels to lowercase for easier matching
           labels="${{ inputs.issue_labels }}"
+          echo "$labels"
           labels_lower=$(echo "$labels" | tr '[:upper:]' '[:lower:]')
+          echo "$labels_lower"
 
           template=""
           if [[ "$labels_lower" == *"bug"* ]]; then
