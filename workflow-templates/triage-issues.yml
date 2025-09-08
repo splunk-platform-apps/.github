@@ -10,4 +10,4 @@ jobs:
     with:
       issue_number: ${{ github.event.issue.number }}
       issue_body: ${{ github.event.issue.body }}
-      issue_labels: ${{ join(github.event.issue.labels.*.name, ",") }}
+      issue_labels: ${{ join(github.event.issue.labels.*.name, ', ') }}
