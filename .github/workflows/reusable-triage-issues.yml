@@ -6,9 +6,6 @@ on:
       issue_number:
         required: true
         type: string
-      issue_body:
-        required: true
-        type: string
       issue_labels:
         required: true
         type: string
@@ -19,17 +16,9 @@ permissions:
 jobs:
   triage:
     runs-on: ubuntu-latest
-    continue-on-error: false
     steps:
-      - name: Checkout caller repository
-        uses: actions/checkout@v4
-        with:
-          repository: ${{ github.repository }}
-          token: ${{ secrets.GITHUB_TOKEN }}
-          path: ./caller-repo
-
-      - name: Detect template
-        id: detect_template
+      - name: Classify issue by template
+        id: classify
         run: |
           # Convert input labels to lowercase for easier matching
           labels="${{ inputs.issue_labels }}"
@@ -37,43 +26,15 @@ jobs:
 
           template=""
           if echo "$labels_lower" | grep -qw "bug"; then
-            template="caller-repo/.github/ISSUE_TEMPLATE/bug-report.yml"
-          elif echo "$labels_lower" | grep -qw "enhancement"; then
-            template="caller-repo/.github/ISSUE_TEMPLATE/feature-request.yml"
-          else
-            echo "❌ Could not detect template from labels: $labels"
-            exit 1
-          fi
-
-          echo "template_path=$template" >> $GITHUB_OUTPUT
-
-      - name: Parse issue content
-        id: parse
-        uses: stefanbuck/github-issue-parser@v3
-        with:
-          template-path: ${{ steps.detect_template.outputs.template_path }}
-          issue-body: ${{ inputs.issue_body }}
-
-      - name: Classify issue by template
-        id: classify
-        run: |
-          # Parse the JSON output
-          PARSED="${{ steps.parse.outputs.issueparser }}"
-
-          # Use jq to check if 'bug-description' exists
-          is_bug=$(echo "$PARSED" | jq 'has("bug-description")')
-          is_feat=$(echo "$PARSED" | jq 'has("feat-description")')
-
-          if [[ "$is_bug" == "true" ]]; then
-            echo "✅ 'bug-description' field found."
+            echo "✅ 'bug' label found."
             echo "labels=type: bug" >> $GITHUB_OUTPUT
             echo "comment=👋 Thanks for reporting a bug! We will triage this issue and come back to you into 2-5 business days." >> $GITHUB_OUTPUT
-          elif [[ "$is_feat" == "true" ]]; then
-            echo "✅ 'feat-description' field found."
+          elif echo "$labels_lower" | grep -qw "enhancement"; then
+            echo "✅ 'enhancement' label found."
             echo "labels=type: feature" >> $GITHUB_OUTPUT
             echo "comment=🚀 Thanks for suggesting a new feature! We will triage this issue and come back to you into 2-5 business days." >> $GITHUB_OUTPUT
           else
-            echo "❌ Unknown title. Issue title does not start with '[Bug]: ' or '[Feature]: '. Please edit it and try again."
+            echo "❌ Could not classify the template based on given labels: $labels"
             exit 1
           fi
 
