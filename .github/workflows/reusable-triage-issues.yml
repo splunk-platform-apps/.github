@@ -5,7 +5,7 @@ on:
     inputs:
       issue_number:
         required: true
-        type: string
+        type: number
       issue_labels:
         required: true
         type: string
