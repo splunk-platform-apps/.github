@@ -1,8 +1,8 @@
 name: Create Repo from Issue
 
 on:
-  issue_comment:
-    types: [created]
+  issues:
+    types: [labeled]
 
 permissions:
   contents: read
@@ -12,6 +12,8 @@ jobs:
   handle-issue:
     environment: create-repo-from-issue
     runs-on: ubuntu-latest
+    # Only run if the 'approved' label was added
+    if: github.event.label.name == 'approved'
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -20,25 +22,20 @@ jobs:
       - uses: tspascoal/get-user-teams-membership@v3
         id: checkUserMember
         with:
-          username: ${{ github.event.comment.user.login }}
+          username: ${{ github.event.sender.login }}
           team: 'admins'
           GITHUB_TOKEN: ${{ secrets.PRIVATE_KEY }}
 
-      # Check authorization and command
-      - name: Verify authorization and command
+      # Check authorization
+      - name: Verify authorization
         run: |
           if [ "${{ steps.checkUserMember.outputs.isTeamMember }}" != "true" ]; then
-            echo "User ${{ github.event.comment.user.login }} is not authorized to trigger this workflow"
-            echo "Only members of the admins team can use the /generate_repo command"
+            echo "User ${{ github.event.sender.login }} is not authorized to trigger this workflow"
+            echo "Only members of the admins team can approve issues"
             exit 1
           fi
           
-          if ! echo '${{ github.event.comment.body }}' | grep -q '/generate_repo'; then
-            echo "Comment does not contain the required '/generate_repo' command"
-            exit 1
-          fi
-          
-          echo "User authorized and command verified"
+          echo "User authorized to approve issue"
 
       - uses: stefanbuck/github-issue-parser@v3
         id: issue-parser
