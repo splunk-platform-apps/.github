@@ -33,14 +33,12 @@ jobs:
         run: |
           # Convert input labels to lowercase for easier matching
           labels="${{ inputs.issue_labels }}"
-          echo "$labels"
           labels_lower=$(echo "$labels" | tr '[:upper:]' '[:lower:]')
-          echo "$labels_lower"
 
           template=""
-          if [[ "$labels_lower" == *"bug"* ]]; then
+          if echo "$labels_lower" | grep -qw "bug"; then
             template="caller-repo/.github/ISSUE_TEMPLATE/bug-report.yml"
-          elif [[ "$labels_lower" == *"enhancement"* ]]; then
+          elif echo "$labels_lower" | grep -qw "enhancement"; then
             template="caller-repo/.github/ISSUE_TEMPLATE/feature-request.yml"
           else
             echo "❌ Could not detect template from labels: $labels"
