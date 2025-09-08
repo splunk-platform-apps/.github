@@ -19,12 +19,14 @@ permissions:
 jobs:
   triage:
     runs-on: ubuntu-latest
+    continue-on-error: false
     steps:
       - name: Checkout caller repository
         uses: actions/checkout@v4
         with:
           repository: ${{ github.repository }}
           token: ${{ secrets.GITHUB_TOKEN }}
+          path: ./caller-repo
 
       - name: Detect template
         id: detect_template
@@ -35,9 +37,9 @@ jobs:
 
           template=""
           if [[ "$labels_lower" == *"bug"* ]]; then
-            template=".github/ISSUE_TEMPLATE/bug-report.yml"
+            template="caller-repo/.github/ISSUE_TEMPLATE/bug-report.yml"
           elif [[ "$labels_lower" == *"enhancement"* ]]; then
-            template=".github/ISSUE_TEMPLATE/feature-request.yml"
+            template="caller-repo/.github/ISSUE_TEMPLATE/feature-request.yml"
           else
             echo "❌ Could not detect template from labels: $labels"
             exit 1
