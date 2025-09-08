@@ -27,16 +27,15 @@ jobs:
           template=""
           if echo "$labels_lower" | grep -qw "bug"; then
             echo "✅ 'bug' label found."
-            echo "labels=type: bug" >> $GITHUB_OUTPUT
             echo "comment=👋 Thanks for reporting a bug! We will triage this issue and come back to you into 2-5 business days." >> $GITHUB_OUTPUT
           elif echo "$labels_lower" | grep -qw "enhancement"; then
             echo "✅ 'enhancement' label found."
-            echo "labels=type: feature" >> $GITHUB_OUTPUT
             echo "comment=🚀 Thanks for suggesting a new feature! We will triage this issue and come back to you into 2-5 business days." >> $GITHUB_OUTPUT
           else
             echo "❌ Could not classify the template based on given labels: $labels"
             exit 1
           fi
+          echo "labels=triage" >> $GITHUB_OUTPUT
 
       - name: Add issue types
         uses: actions-ecosystem/action-add-labels@v1
