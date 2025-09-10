@@ -35,6 +35,10 @@ We use [Docusaurus](https://docusaurus.io/) to build and maintain documentation 
 
 The sample [boilerplate app](./boilerplate/) demonstrates a complete documentation setup.
 
+#### Docusaurus Updates
+
+Follow [instructions](https://docusaurus.io/docs/installation#updating-your-docusaurus-version) and more specific [notes](https://overreacted.io/npm-audit-broken-by-design/) on fixing dependencies vulnerabilites.
+
 ### Required Structure
 
 All Splunk Platform Apps must maintain two key documentation files:
@@ -65,3 +69,5 @@ Documentation undergoes automated quality checks including:
 - Link validation
 - Structure verification
 - Content completeness checks
+
+
