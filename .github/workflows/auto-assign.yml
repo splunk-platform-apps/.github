@@ -10,8 +10,9 @@ jobs:
       - name: "Auto-assign issue"
         uses: pozil/auto-assign-issue@v2
         with:
-          assignees: procommand,joseacunacarrera,edro15
-          numOfAssignee: 2
+          assignees: shalper2,joseacunacarrera,edro15
+          # teams: admins
+          numOfAssignee: 1
           allowSelfAssign: false
           # Auto-assigns new issues to two users randomly chosen from listed ones
           # It won't self-assign to the issue author
