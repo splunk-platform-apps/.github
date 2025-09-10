@@ -14,6 +14,8 @@ Please see the `.github` folder for the following docs:
 The `workflow-templates` folder contains the [GitHub Action](https://docs.github.com/en/actions)
 workflow files for the common CI workflows used by our app repos.
 
+The `documentation` folder contains information and an example of usage to easily deploy and possibly customize documentation styling of our app repos.
+
 The `actions` folder contains the GitHub actions available for usage into CI workflows used by our app repos:
 
 - :construction: [Gold Standard Assessment](./actions/goldstandard/README.md)
