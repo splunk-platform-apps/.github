@@ -3,6 +3,9 @@ on:
   issues:
     types: [opened]
 
+permissions:
+  issues: write # Grant write permission to issues
+
 jobs:
   auto-assign:
     runs-on: ubuntu-latest
