@@ -1,5 +1,5 @@
 # Action for Gold Standard Assessment
-This action aims automatically assessing your Splunk Add-on compliance with the so called Gold Standard. A score will be returned as response to its project evaluation.
+This action aims automatically assessing your Splunk Add-on compliance with the [Gold Standard](https://dev.splunk.com/enterprise/docs/planapps/splunk-add-on-gold-standard/). A score will be returned as response to its project evaluation.
 
 The purpose of the standard is defining best practices that lay the foundation for successful Splunk Technology Add-on (TA) development. By complying with it, your TA aligns with Splunk's highest standards, enhances compatibility and facilitates long-term maintainability.
 
