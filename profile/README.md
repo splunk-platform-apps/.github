@@ -36,7 +36,7 @@ The Splunk> Platform Apps organization follows the [Splunk Community Guidelines]
 
 ## :heart_on_fire: Contributing
 
-If you are interested in contributing your App or Technical Add-On then first of all: Thanks! People like you and the work that you do is an integral part of keeping the Splunk community alive and thriving. There is a lot of work to do and your contributions make a world of difference towards our goal of a better Splunk. To begin the process please read the [Contributing guide](.github/CONTRIBUTING.md) and then, when you're ready, open an issue with the appropriate template. Once the component has been accepted we will create a repository for your project within the Splunk> Platform Apps organization with you as a codeowner. This repository will contain a `.github` file with issue and pull request templates as well as some ci/cd workflows common to similar projects.
+If you are interested in contributing your App or Technical Add-On then first of all: Thanks! People like you and the work that you do is an integral part of keeping the Splunk community alive and thriving. There is a lot of work to do and your contributions make a world of difference towards our goal of a better Splunk. To begin the process please read the [Contributing guide](../.github/CONTRIBUTING.md) and then, when you're ready, open an issue with the appropriate template. Once the component has been accepted we will create a repository for your project within the Splunk> Platform Apps organization with you as a codeowner. This repository will contain a `.github` file with issue and pull request templates as well as some ci/cd workflows common to similar projects.
 
 ---
 
