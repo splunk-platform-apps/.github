@@ -17,7 +17,7 @@ jobs:
           # teams: admins
           numOfAssignee: 1
           allowSelfAssign: false
-          # Auto-assigns new issues to two users randomly chosen from listed ones
+          # Auto-assigns new issues to one user randomly chosen from teams or assignees.
           # It won't self-assign to the issue author
-          # TODO evaluate and eventually assign to team!
+          # TODO evaluate and eventually assign to team! - requires PAT / Github App configuration.
           # https://github.com/pozil/auto-assign-issue
