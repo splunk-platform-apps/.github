@@ -1,0 +1,38 @@
+name: Verify Authorization to approve an issue
+
+on:
+  issues:
+    types: [labeled]
+
+permissions:
+  contents: read
+  issues: write
+
+jobs:
+  handle-issue:
+    environment: create-repo-from-issue
+    runs-on: ubuntu-latest
+    # Only run if the 'approved' label was added
+    if: github.event.label.name == 'approved'
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # Check if user is member of authorized team
+      - uses: tspascoal/get-user-teams-membership@v3
+        id: checkUserMember
+        with:
+          username: ${{ github.event.sender.login }}
+          team: 'admins'
+          GITHUB_TOKEN: ${{ secrets.PRIVATE_KEY }}
+
+      # TODO: Is this preventing the label to be added?
+      - name: Verify authorization
+        run: |
+          if [ "${{ steps.checkUserMember.outputs.isTeamMember }}" != "true" ]; then
+            echo "❌ User ${{ github.event.sender.login }} is not authorized to trigger this workflow"
+            echo "Only members of the admins team can approve issues"
+            exit 1
+          fi
+
+          echo "✅ User authorized to approve issue"
