@@ -30,3 +30,26 @@ It's recommended to follow this convention when contributing to the repositories
 Apps should follow the [Splunkbase naming guidelines](https://dev.splunk.com/enterprise/docs/releaseapps/splunkbase/namingguidelines/). Further details for Splunk naming conventions can be found [here](https://lantern.splunk.com/Splunk_Success_Framework/Data_Management/Naming_conventions).
 
 An example repository which meets these conventions can be found in the [splunkcommunity\_ta](https://github.com/splunk-platform-apps/splunkcommunity_ta_ucc)
+
+## Renovate (Automated Dependency Updates)
+Renovate is configured to automatically manage dependency updates across all repositories in this organization.
+
+### How It Works
+- Renovate runs on a schedule via GitHub Actions
+- It scans all repositories for outdated dependencies
+- PRs are automatically created with updates
+
+### Supported Managers
+- GitHub Actions
+- Splunk Docker images
+- npm (`package.json`)
+- Pre-commit hooks (`.pre-commit-config.yaml`)
+
+### Configuration
+- **Global config**: `.github/renovate-config.js` (applies to all repos)
+- **Repo-level overrides**: `.github/renovate.json` (added in each repo in need for specific settings)
+
+### Automerge
+- PRs with `automerge: true` will auto-merge via GitHub's platform automerge
+- Branch protection rules and reviewer approval are still required
+- Reviewers are assigned even on automerge PRs (`assignAutomerge: true`)
