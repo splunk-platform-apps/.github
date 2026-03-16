@@ -1,0 +1,56 @@
+name: Test Splunk TA Installs
+
+on:
+  push:
+  workflow_dispatch:
+
+env:
+  SPLUNK_PASSWORD: password
+  SPLUNK_USER: admin
+  # Set this to your actual TA folder/app name (must match the folder name under etc/apps)
+  TA_NAME: TA-your_addon_name
+
+jobs:
+  test-ta-install:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Start Splunk (Docker)
+        run: |
+          docker run -d --name splunk \
+            -e SPLUNK_START_ARGS="--accept-license" \
+            -e SPLUNK_PASSWORD="${SPLUNK_PASSWORD}" \
+            -p 8089:8089 -p 8000:8000 \
+            splunk/splunk:latest
+
+      - name: Wait for Splunk API
+        run: |
+          for i in {1..60}; do
+            if curl -sk https://localhost:8089/services/server/info >/dev/null; then
+              echo "Splunk is up"
+              exit 0
+            fi
+            sleep 5
+          done
+          docker logs splunk
+          exit 1
+
+      - name: Install TA into Splunk and restart
+        run: |
+          docker exec splunk mkdir -p /opt/splunk/etc/apps/"$TA_NAME"
+          docker cp . splunk:/opt/splunk/etc/apps/"$TA_NAME"
+          docker exec splunk bash -lc "chown -R splunk:splunk /opt/splunk/etc/apps/$TA_NAME"
+          docker exec splunk bash -lc "/opt/splunk/bin/splunk restart --accept-license --answer-yes --no-prompt"
+
+      - name: Verify app is registered
+        run: |
+          docker exec splunk bash -lc \
+            "curl -sk -u ${SPLUNK_USER}:${SPLUNK_PASSWORD} \
+              https://localhost:8089/services/apps/local?count=0 \
+              | tr '\n' ' ' \
+              | grep -q \"<title>${TA_NAME}</title>\""
+
+      - name: Dump logs on failure
+        if: failure()
+        run: docker logs splunk
