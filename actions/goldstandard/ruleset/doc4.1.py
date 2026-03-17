@@ -35,7 +35,11 @@ if __name__ == "__main__":
 
             filtered_objects = [key for key, counts in report.items() if "error" in counts]
             if filtered_objects:
-                print(f"Errors detected in doc files: {filtered_objects}")
+                print(f"Please fix all errors detected in doc files {filtered_objects} to proceed.")
+                print(
+                    f"""NOTE: Error details can be found in the generated 'docs-linting-report', attached as
+                    'Artifact' to this action execution summary"""
+                )
                 sys.exit(1)
     except FileNotFoundError:
         print(f"File not found: {filepath}")
