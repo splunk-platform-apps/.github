@@ -15,8 +15,7 @@ jobs:
     # Only run if the 'approved' label was added
     if: github.event.label.name == 'approved'
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v6
 
       # Check if user is member of authorized team
       - uses: tspascoal/get-user-teams-membership@v3
