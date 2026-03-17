@@ -13,8 +13,8 @@ jobs:
     outputs:
       artifact_name: ${{ steps.artifact.outputs.name }}
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
+      - uses: actions/checkout@v6
+      - uses: actions/setup-python@v6
         with:
           python-version: ${{ matrix.python-version }}
       - name: Install dependencies
@@ -85,7 +85,7 @@ jobs:
         run: |
           echo "name=${{ steps.app.outputs.name }}-${{ steps.app.outputs.version }}-py${{ matrix.python-version }}" >> $GITHUB_OUTPUT
 
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v6
         with:
           name: ${{ steps.artifact.outputs.name }}
           path: ${{ steps.app.outputs.name }}*.tar.gz
@@ -98,11 +98,11 @@ jobs:
     outputs:
       failures: ${{ steps.result.outputs.value }}
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
+      - uses: actions/checkout@v6
+      - uses: actions/setup-python@v6
         with:
           python-version: "3.10"
-      - uses: actions/download-artifact@v4
+      - uses: actions/download-artifact@v5
         with:
           name: ${{ needs.build.outputs.artifact_name }}
           path: dist
@@ -121,7 +121,7 @@ jobs:
           echo "value=$result,0" >> $GITHUB_OUTPUT
 
   docs-linting:
-    uses: splunk-platform-apps/.github/.github/workflows/reusable-docs-linting.yml@main
+    uses: splunk-platform-apps/.github/.github/workflows/reusable-docs-linting.yml@1
 
   gold-standard:
     runs-on: ubuntu-latest
@@ -129,8 +129,8 @@ jobs:
       - appinspect-cli
       - docs-linting
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/download-artifact@v4
+      - uses: actions/checkout@v6
+      - uses: actions/download-artifact@v5
         with:
           name: docs-linting-report
       - name: Get Docs-Linting report path
@@ -140,7 +140,7 @@ jobs:
           echo "reportpath=$filepath" >> $GITHUB_OUTPUT
       - name: Assess Gold Standard compatibility
         id: qa_goldstandard
-        uses: splunk-platform-apps/.github/actions/goldstandard@main
+        uses: splunk-platform-apps/.github/actions/goldstandard@1
         with:
           appinspect-failures: ${{ needs.appinspect-cli.outputs.failures }}
           report-path: ${{ steps.docslinting.outputs.reportpath }}
