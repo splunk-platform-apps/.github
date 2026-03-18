@@ -21,6 +21,10 @@ The `actions` folder contains the GitHub actions available for usage into CI wor
 - :construction: [Gold Standard Assessment](./actions/goldstandard/README.md)
 - :construction: [Splunk App Detector](./actions/splunk-apps-detector/README.md)
 
+## Admin Operations
+
+See [ADMIN.md](.github/ADMIN.md) for instructions on tagging and approving new repository requests.
+
 ## Support
 Did we miss anything?
 
