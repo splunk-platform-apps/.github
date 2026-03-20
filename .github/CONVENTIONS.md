@@ -49,6 +49,8 @@ Renovate is configured to automatically manage dependency updates across all rep
 - **Global config**: `.github/renovate-config.js` (applies to all repos)
 - **Repo-level overrides**: `.github/renovate.json` (added in each repo in need for specific settings)
 
+:point_right: More about [configuration options](https://docs.renovatebot.com/configuration-options/)
+
 ### Automerge
 - PRs with `automerge: true` will auto-merge via GitHub's platform automerge
 - Branch protection rules and reviewer approval are still required
