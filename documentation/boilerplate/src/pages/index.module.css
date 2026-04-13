@@ -23,3 +23,9 @@
   align-items: center;
   justify-content: center;
 }
+
+/* Customization to have app/add-on titles with capitalized letters */
+.hero__title {
+  font-size: 3rem;
+  text-transform: capitalize;
+}
