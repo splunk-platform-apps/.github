@@ -158,8 +158,9 @@ jobs:
           TAG: ${{ github.ref_name }}
           CHANGELOG_VERSION: ${{ steps.release-info.outputs.version }}
         run: |
-          if [ "$TAG" != "$CHANGELOG_VERSION" ]; then
-            echo "❌ '$TAG' does not match '$CHANGELOG_VERSION' provided by the CHANGELOG file. Did you forget to update the file?"
+          TAG_NO_LEADING_V="${TAG#v}"
+          if [ "$TAG_NO_LEADING_V" != "$CHANGELOG_VERSION" ]; then
+            echo "❌ '$TAG_NO_LEADING_V' does not match '$CHANGELOG_VERSION' provided by the CHANGELOG file. Did you forget to update the file?"
             exit 1
           fi
       - name: Create GitHub Release

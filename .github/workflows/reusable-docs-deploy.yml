@@ -12,24 +12,57 @@ jobs:
   build:
     name: Build Docusaurus
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: website
     steps:
+      # Checkout repo for docs and configs
       - uses: actions/checkout@v6
         with:
           fetch-depth: 0
+          path: current-repo
+      # Checkout repo for Docusaurus skeleton
+      - uses: actions/checkout@v6
+        with:
+          repository: splunk-platform-apps/.github
+          path: dotgithub
+
+      - name: Assemble /website directory
+        working-directory: ${{ github.workspace }}
+        run: |
+          cp -r dotgithub/documentation/boilerplate ./website
+          rm -rf website/docs ./website/docusaurus.config.ts README.md .gitignore
+          mv current-repo/docs ./website/docs
+          cp current-repo/website/docusaurus.config.ts ./website/docusaurus.config.ts
+          # Rename package.json depending on repo name
+          REPO_NAME="${{ github.event.repository.name }}"
+
+          jq --arg name "$REPO_NAME" '.name = $name' ./website/package.json > tmp.json \
+            && mv tmp.json ./website/package.json
+
+          jq --arg name "$REPO_NAME" '.name = $name' ./website/package-lock.json > tmp.json \
+            && mv tmp.json ./website/package-lock.json
+
+          echo "Debugging /website dir content"
+          ls -la ./website
+          ls -la ./website/docs
+
       - uses: actions/setup-node@v4
         with:
+          cache-dependency-path: website/package-lock.json
           node-version: 20
           cache: npm
 
       - name: Install dependencies
         run: npm ci
+
       - name: Build website
         run: npm run build
 
       - name: Upload Build Artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: build
+          path: website/build
 
   deploy:
     name: Deploy to Github Pages
