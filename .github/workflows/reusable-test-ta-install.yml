@@ -1,7 +1,6 @@
 name: Test Splunk TA Installs
 
 on:
-  push:
   workflow_call:
     inputs:
       addon_name:
@@ -25,7 +24,6 @@ jobs:
       app_name: ${{ steps.app.outputs.name }}
     steps:
       - uses: actions/checkout@v6
-      - run: mkdir -p dist
       - uses: actions/setup-python@v6
         with:
           python-version: "3.13"
