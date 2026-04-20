@@ -18,10 +18,99 @@ permissions:
   contents: read # to successfully checkout repo
 
 jobs:
-  test-ta-install:
+  bundle:
+    name: Bundle App
     runs-on: ubuntu-latest
+    outputs:
+      app_name: ${{ steps.app.outputs.name }}
     steps:
       - uses: actions/checkout@v6
+      - run: mkdir -p dist
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.13"
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install --upgrade crudini splunk-packaging-toolkit splunk-add-on-ucc-framework jq
+
+      - name: Get App Info
+        id: app
+        run: |
+          MANIFEST="app.manifest"
+          APP_CONF="default/app.conf"
+          if [ -f "$MANIFEST" ]; then
+            app_id=$(cat "$MANIFEST" | jq -r '.info.id.name')
+            app_version=$(cat "$MANIFEST" | jq -r '.info.id.version')
+            echo "name=${app_id}" >> $GITHUB_OUTPUT
+            echo "version=${app_version}" >> $GITHUB_OUTPUT
+          elif [ -f "$APP_CONF" ]; then
+            app_pck_id=$(crudini --get "$APP_CONF" package id 2>/dev/null || echo "")
+            app_id=$(crudini --get "$APP_CONF" id name 2>/dev/null || echo "")
+            if [ -z "$app_pck_id" ] && [ -z "$app_id" ]; then
+              echo "App Info Missing ❌ Please add 'package/app.manifest' or stanza [package] with id in 'package/default/app.conf' as per https://docs.splunk.com/Documentation/Splunk/latest/Admin/Appconf#.5Bpackage.5D"
+              exit 1
+            fi
+            if [ -z "$app_id" ]; then
+              app_id=$app_pck_id
+            fi
+            app_version=$(crudini --get "$APP_CONF" launcher version 2>/dev/null || echo "")
+            echo "name=${app_id}" >> $GITHUB_OUTPUT
+            echo "version=${app_version}" >> $GITHUB_OUTPUT
+          else
+            echo "Files Not Found ❌ Please add 'package/app.manifest' or 'package/default/app.conf'"
+            exit 1
+          fi
+        working-directory: ./package
+
+      - name: Check whether built by the UCC framework
+        id: ta_builder
+        run: |
+          if [ -f "./globalConfig.json" ]; then
+            echo "result=ucc" >> $GITHUB_OUTPUT
+          else
+            echo "result=none" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Bundle TA
+        if: ${{ steps.ta_builder.outputs.result == 'none' }}
+        run: |
+          sed -i '/^!/d' README.md
+          cp README.md package/README.md
+          if [ ! -f "./package/default/addon_builder.conf" ]; then
+            rm -rf package/README.txt
+          fi
+          mkdir -p output/${{ steps.app.outputs.name }}
+          cp -r package/* output/${{ steps.app.outputs.name }}
+          tar -C output -zcvf ${{ steps.app.outputs.name }}-${{ steps.app.outputs.version }}.tar.gz ${{ steps.app.outputs.name }}/
+
+      - name: Build and bundle TA
+        if: ${{ steps.ta_builder.outputs.result == 'ucc' }}
+        run: |
+          ucc-gen build --ta-version ${{ steps.app.outputs.version }}
+          chmod -R +r output
+          chmod -R go-w output
+          ucc-gen package --path output/${{ steps.app.outputs.name }}
+        shell: bash
+
+      - uses: actions/upload-artifact@v6
+        with:
+          name: app_dir
+          path: output/${{ steps.app.outputs.name }}
+          
+  test-ta-install:
+    runs-on: ubuntu-latest
+    needs: bundle
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/download-artifact@v5
+        with:
+          name: app_dir
+          path: ${{ needs.bundle.outputs.app_name }}
+
+      - name: Verify volume download
+        run: |
+          ls ${{ github.workspace }}/${{ needs.bundle.outputs.app_name}}
 
       - name: Start Splunk (Docker)
         run: |
@@ -29,7 +118,7 @@ jobs:
             -e SPLUNK_START_ARGS="--answer-yes --no-prompt --accept-license" \
             -e SPLUNK_GENERAL_TERMS="--accept-sgt-current-at-splunk-com" \
             -e SPLUNK_PASSWORD="${SPLUNK_PASSWORD}" \
-            -v ${{ github.workspace }}/package:/opt/splunk/etc/apps/${TA_NAME} \
+            -v ${{ github.workspace }}/${{ needs.bundle.outputs.app_name}}:/opt/splunk/etc/apps/${TA_NAME} \
             -p 8089:8089 \
             -p 8000:8000 \
             splunk/splunk:latest
@@ -45,11 +134,8 @@ jobs:
           done
           docker logs splunk
           exit 1
+          
 
-      # - name: Install TA into Splunk and restart
-      #  run: |
-      #    docker exec splunk mkdir -p /opt/splunk/etc/apps/${TA_NAME}
-      #    docker exec splunk bash -lc "/opt/splunk/bin/splunk restart --accept-license --answer-yes --no-prompt"
 
       - name: Verify app is registered
         run: |
