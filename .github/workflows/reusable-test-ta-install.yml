@@ -11,7 +11,10 @@ env:
   SPLUNK_PASSWORD: password
   SPLUNK_USER: admin
   # Set this to your actual TA folder/app name (must match the folder name under etc/apps)
-  TA_NAME: TA-your_addon_name
+  TA_NAME: ${{ inputs.addon_name }}
+
+permissions:
+  contents: read # to successfully checkout repo
 
 jobs:
   test-ta-install:
