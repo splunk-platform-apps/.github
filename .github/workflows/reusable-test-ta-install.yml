@@ -135,8 +135,6 @@ jobs:
           docker logs splunk
           exit 1
           
-
-
       - name: Verify app is registered
         run: |
           docker exec splunk bash -lc \
