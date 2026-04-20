@@ -1,8 +1,11 @@
 name: Test Splunk TA Installs
 
 on:
-  push:
-  workflow_dispatch:
+  workflow_call:
+    inputs:
+      addon_name:
+        required: true
+        type: string
 
 env:
   SPLUNK_PASSWORD: password
