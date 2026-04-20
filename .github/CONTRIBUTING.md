@@ -139,6 +139,13 @@ Do not forget to provide the name of the repository the request is referring to.
 
 :point_right: It is at the discretion of the organization administrators to decide if a repository shall be archived in case of inactivity greater than 1 year, during which time there are active Issues or Pull Requests to address.
 
+## Dependency Updates
+This organization uses [Renovate](https://docs.renovatebot.com/) for automated dependency updates. PRs from Renovate are created automatically.
+
+- Review and approve Renovate PRs to trigger auto-merge whenever applicable
+- Review, evaluate and manually merge Renovate PRs whenever auto-merge is disabled
+- For more details, incl. organization-wide standards, see the [CONVENTIONS.md](https://github.com/splunk-platform-apps/.github/blob/main/CONVENTIONS.md#renovate-automated-dependency-updates) file
+
 ## Legal Notice
 By submitting a Contribution to this Work, You agree that Your Contribution is made subject to the primary license in the Apache 2.0 license (found [here](https://www.apache.org/licenses/LICENSE-2.0.txt)). In addition, You represent that: (i) You are the copyright owner of the Contribution or (ii) You have the requisite rights to make the Contribution.
 
