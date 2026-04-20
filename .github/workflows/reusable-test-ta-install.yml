@@ -30,7 +30,8 @@ jobs:
             -e SPLUNK_GENERAL_TERMS="--accept-sgt-current-at-splunk-com" \
             -e SPLUNK_PASSWORD="${SPLUNK_PASSWORD}" \
             -v ${{ github.workspace }}/package:/opt/splunk/etc/apps/${TA_NAME} \
-            -p 8089:8089 -p 8000:8000 \
+            -p 8089:8089 \
+            -p 8000:8000 \
             splunk/splunk:latest
 
       - name: Wait for Splunk API
@@ -45,10 +46,10 @@ jobs:
           docker logs splunk
           exit 1
 
-      - name: Install TA into Splunk and restart
-        run: |
-          docker exec splunk mkdir -p /opt/splunk/etc/apps/${TA_NAME}
-          docker exec splunk bash -lc "/opt/splunk/bin/splunk restart --accept-license --answer-yes --no-prompt"
+      # - name: Install TA into Splunk and restart
+      #  run: |
+      #    docker exec splunk mkdir -p /opt/splunk/etc/apps/${TA_NAME}
+      #    docker exec splunk bash -lc "/opt/splunk/bin/splunk restart --accept-license --answer-yes --no-prompt"
 
       - name: Verify app is registered
         run: |
