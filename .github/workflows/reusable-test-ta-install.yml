@@ -48,7 +48,7 @@ jobs:
       - name: Install TA into Splunk and restart
         run: |
           docker exec splunk mkdir -p /opt/splunk/etc/apps/"$TA_NAME"
-          docker cp . splunk:/opt/splunk/etc/apps/"$TA_NAME"
+          # docker cp . splunk:/opt/splunk/etc/apps/"$TA_NAME"
           # docker exec splunk bash -lc "chown -R splunk:splunk /opt/splunk/etc/apps/$TA_NAME"
           docker exec splunk bash -lc "/opt/splunk/bin/splunk restart --accept-license --answer-yes --no-prompt"
 
