@@ -35,9 +35,9 @@ Only [admins](https://github.com/orgs/splunk-platform-apps/teams/admins) are aut
      ```
      git checkout main
      git pull
-     git tag 1.0.0
-     git push origin 1.0.0
-     ```
+     git tag -a 1.0.0 <commit-sha> -m "1.0.0 add here your message"
+     git push origin tag 1.0.0
+     ``` 
    - Or use GitHub UI to create a tag.
 3. Confirm the tag appears in the repository.
 
