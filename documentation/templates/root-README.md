@@ -2,7 +2,7 @@
 
 ## Getting Started
 
-To install and run this app, download the latest compiled application directly from the Releases page.
+To install and run this app, download the latest compiled application directly from the releases page.
 
 :package: [Download the latest release here](https://splunk-platform-apps.github.io/boilerplate/releases)
 
