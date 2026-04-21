@@ -1,6 +1,6 @@
 # Your-App-Name
 
-To install and run [Your-App-Name], you can download the latest compiled application directly from the Releases page.
+To install and run this app, you can download the latest compiled application directly from the Releases page.
 
 :package: [Download the latest release here](https://splunk-platform-apps.github.io/boilerplate/releases)
 
