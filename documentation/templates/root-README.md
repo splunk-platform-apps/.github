@@ -1,51 +1,17 @@
 # Your-App-Name
 
-Essential links for the project:
+To install and run [Your-App-Name], you can download the latest compiled application directly from the Releases page.
 
-:books: [Documentation](./docs/readme.md)<br/>
+:package: [Download the latest release here](https://splunk-platform-apps.github.io/boilerplate/releases)
+
+Once downloaded, installation instructions can be found in the provided [documentation](https://splunk-platform-apps.github.io/boilerplate/)
+
+## Useful Links
+
+:books: [Documentation](https://splunk-platform-apps.github.io/boilerplate/)<br/>
 :writing_hand: [Release Notes](./CHANGELOG.md)<br/>
-:heart_on_fire: [Contributing Guidelines](https://github.com/splunk-platform-apps/.github/.github/CONTRIBUTING.md)<br/>
 :balance_scale: [License](./LICENSE)
 
-## Getting Started
-* Structure your code as per [below](#repository-structure)
-* Add documentation to your project following [guidelines](https://github.com/splunk-platform-apps/.github/blob/main/documentation/DEV_GUIDELINES.md)
-* Understand usage and troubleshooting of provided [automation pipelines](https://github.com/splunk-platform-apps/.github/blob/main/.github/CONTRIBUTING.md)
-* Understand the [release process](https://github.com/splunk-platform-apps/.github/blob/main/.github/CONTRIBUTING.md)
+:gear: [Development Guidelines](https://github.com/splunk-platform-apps/.github/blob/main/documentation/DEV_GUIDELINES.md#getting-started)<br/>
+:heart_on_fire: [Contributing Guidelines](https://github.com/splunk-platform-apps/.github/blob/main/.github/CONTRIBUTING.md)<br/>
 
-### Repository Structure
-```
-.
-├── README.md
-├── CHANGELOG.md
-├── docs
-│   └── readme.md
-├── package
-|   ├── README.txt
-│   ├── README
-│   ├── LICENSES
-|   |   └── LICENSE.txt
-│   ├── app.manifest
-│   ├── appserver
-│   ├── bin
-│   ├── default
-│   ├── metadata
-│   └── static
-├── etc
-├── src
-├── static
-└── tests
-    ├── conftest.py
-    └── pytest.ini
-```
-
-* `README.md` to set expectations and give usage instructions
-* `CHANGELOG.md` to keep track of all notable changes made as explained [here](https://github.com/splunk-platform-apps/.github/blob/main/.github/DEV_WORKFLOW.md#changelog)
-* `docs/` contains main documentation
-* `.gitignore` to ignore hidden or OS_ files
-* `etc/` contains additional files such as images, configuration files, etc
-* `src/` and `static/` contain files required by [docusaurus](https://github.com/splunk-platform-apps/.github/blob/main/documentation/DEV_GUIDELINES.md)
-* `package/` contains Splunk App / Add-On Source Files
-* `tests/` contains files for unit testing, e2e testing, mocks, postman collections, etc
-
-:point_right: Files needed for local development, packaging and local execution such as for example `docker-compose.yml`, `Makefile`, `pyproject.toml` or `poetry.lock` shall be added in the root folder.
