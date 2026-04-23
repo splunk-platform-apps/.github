@@ -32,7 +32,7 @@ jobs:
         run: |
           cp -r dotgithub/documentation/boilerplate ./website
           rm -rf website/docs ./website/docusaurus.config.ts README.md .gitignore
-          cp -r current-repo/docs ./website/docs
+          mv current-repo/docs ./website/docs
           cp current-repo/website/docusaurus.config.ts ./website/docusaurus.config.ts
           # Rename package.json depending on repo name
           REPO_NAME="${{ github.event.repository.name }}"
