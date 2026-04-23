@@ -90,7 +90,6 @@ jobs:
           # Download and install packages
           vale sync
           # Execute
-          # vale --output=JSON docs/*.md > vale-report.json || true
           find ./docs -type f -name "*.md" -print0 | xargs -0 vale --output=JSON > vale-report.json || true
 
       - name: Upload Results
