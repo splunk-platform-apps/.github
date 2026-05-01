@@ -25,7 +25,7 @@ jobs:
           owner: "splunk-platform-apps"
           # The owner of the GitHub App installation
       - name: Self-hosted Renovate
-        uses: renovatebot/github-action@v46.1.4
+        uses: renovatebot/github-action@v46.1.11
         env:
           LOG_LEVEL: debug
           # Onboarding not needed for self-hosted usage
