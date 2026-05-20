@@ -99,7 +99,7 @@ jobs:
         run: |
           echo "name=${{ steps.app.outputs.name }}-${{ steps.app.outputs.version }}-py${{ matrix.python-version }}" >> $GITHUB_OUTPUT
 
-      - uses: actions/upload-artifact@v6
+      - uses: actions/upload-artifact@v7
         with:
           name: ${{ steps.artifact.outputs.name }}
           path: ${{ steps.app.outputs.name }}*.tar.gz
@@ -120,7 +120,7 @@ jobs:
       - uses: actions/setup-python@v6
         with:
           python-version: "3.10"
-      - uses: actions/download-artifact@v5
+      - uses: actions/download-artifact@v8
         with:
           name: ${{ needs.build.outputs.artifact_name }}
           path: dist
@@ -128,7 +128,7 @@ jobs:
         with:
           app_path: dist
           included_tags: ${{ matrix.tags }}
-      - uses: actions/upload-artifact@v6
+      - uses: actions/upload-artifact@v7
         with:
           name: appinspect_result_${{ matrix.tags }}
           path: appinspect_result.json
@@ -143,7 +143,7 @@ jobs:
       startsWith(github.ref, 'refs/tags/')
     steps:
       - uses: actions/checkout@v6
-      - uses: actions/download-artifact@v5
+      - uses: actions/download-artifact@v8
         with:
           name: ${{ needs.build.outputs.artifact_name }}
           path: dist
