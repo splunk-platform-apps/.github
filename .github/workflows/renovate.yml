@@ -18,14 +18,14 @@ jobs:
       - uses: actions/checkout@v6
       - name: Get token
         id: get_token
-        uses: actions/create-github-app-token@v2
+        uses: actions/create-github-app-token@v3
         with:
           private-key: ${{ secrets.RENOVATE_PRIVATE_KEY }}
-          app-id: ${{ secrets.RENOVATE_APP_ID }}
+          client-id: ${{ secrets.RENOVATE_CLIENT_ID }}
           owner: "splunk-platform-apps"
           # The owner of the GitHub App installation
       - name: Self-hosted Renovate
-        uses: renovatebot/github-action@v46.1.4
+        uses: renovatebot/github-action@v46.1.11
         env:
           LOG_LEVEL: debug
           # Onboarding not needed for self-hosted usage

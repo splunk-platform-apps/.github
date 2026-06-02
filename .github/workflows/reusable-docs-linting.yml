@@ -93,7 +93,7 @@ jobs:
           find ./docs -type f -name "*.md" -print0 | xargs -0 vale --output=JSON > vale-report.json || true
 
       - name: Upload Results
-        uses: actions/upload-artifact@v6
+        uses: actions/upload-artifact@v7
         with:
           name: docs-linting-report
           path: vale-report.json

@@ -8,7 +8,8 @@ module.exports = {
     autodiscover: true,
     autodiscoverFilter: [
         'splunk-platform-apps/*',
-        '!splunk-platform-apps/splunkcommunity-vale'
+        '!splunk-platform-apps/splunkcommunity-vale',
+        '!splunk-platform-apps/*_test'
     ],
 
     // Require some config
