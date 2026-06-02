@@ -143,11 +143,25 @@ jobs:
           echo "reportpath=$filepath" >> $GITHUB_OUTPUT
       - name: Assess Gold Standard compatibility
         id: qa_goldstandard
+        continue-on-error: true
         uses: splunk-platform-apps/.github/actions/goldstandard@1
         with:
           appinspect-failures: ${{ needs.appinspect-cli.outputs.failures }}
           report-path: ${{ steps.docslinting.outputs.reportpath }}
+
+      # More about warning messages
+      # - https://docs.github.com/en/actions/reference/workflows-and-actions/workflow-commands#setting-a-warning-message
+      - name: Warn on assessment failure
+        if: steps.qa_goldstandard.outcome != "success"
+        run: |
+          echo "::warning title=Gold Standard Assessment::This add-on did not qualify for the gold standard certification because of unmet mandatory requirement(s)."
+          echo "⚠️ **Gold Standard Assessment**: Mandatory requirement(s) unmet, the add-on does not qualify for gold standard certification." >> $GITHUB_STEP_SUMMARY
+
+      # More about Job Summary and steps contexts
+      # - https://docs.github.com/en/actions/reference/workflows-and-actions/workflow-commands#adding-a-job-summary
+      # - https://docs.github.com/en/actions/reference/workflows-and-actions/contexts#steps-context
       - name: Results
+        if: steps.qa_goldstandard.outcome == "success"
         env:
           SCORE: ${{ steps.qa_goldstandard.outputs.score }}
           THRESHOLD: ${{ steps.qa_goldstandard.outputs.min_score }}
@@ -159,4 +173,6 @@ jobs:
           else
             echo "Score does not meet the minimum passing score of $THRESHOLD points"
             echo "Please verify your TA is built using the latest UCC version, performs configuration validation, provides std logging format and uses latest dependencies"
+            echo "::warning title=Gold Standard Assessment::This add-on did not qualify for the gold standard certification scoring ${SCORE}."
+            echo "⚠️ **Gold Standard Assessment**: Minimum passing score of ${THRESHOLD} unmet, the add-on does not qualify for gold standard certification." >> $GITHUB_STEP_SUMMARY
           fi
