@@ -51,7 +51,7 @@ module.exports = {
     branchPrefix: 'renovate/',
 
     // Labels
-    labels: ['dependency-update', 'renovate', 'automerge-enabled' ],
+    labels: ['dependency-update', 'automerge-enabled' ],
 
     // Assignees/Reviewers
     reviewersFromCodeOwners: true,
@@ -107,7 +107,7 @@ module.exports = {
             matchCurrentVersion: "/^9\\.4\\./",
             matchUpdateTypes: [ "minor", "major" ],
             minimumReleaseAge: "3 days",
-            labels: [ 'dependency-update', 'renovate', 'needs-review' ],
+            labels: [ 'dependency-update', 'needs-review' ],
             groupName: "Splunk 9.4.x Major/Minor Available"
         },
         // GitHub Actions specific
@@ -118,7 +118,7 @@ module.exports = {
             // Ensures to get PRs for major updates (v4 -> v5)
             separateMajorMinor: true,
             excludePackagePatterns: ["^splunk-platform-apps/"],
-            labels: ['dependency-update', 'renovate', 'needs-review'],
+            labels: ['dependency-update', 'needs-review'],
             minimumReleaseAge: "3 days"
         },
         {
