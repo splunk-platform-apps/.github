@@ -152,7 +152,7 @@ jobs:
       # More about warning messages
       # - https://docs.github.com/en/actions/reference/workflows-and-actions/workflow-commands#setting-a-warning-message
       - name: Warn on assessment failure
-        if: steps.qa_goldstandard.outcome != "success"
+        if: steps.qa_goldstandard.outcome != 'success'
         run: |
           echo "::warning title=Gold Standard Assessment::This add-on did not qualify for the gold standard certification because of unmet mandatory requirement(s)."
           echo "⚠️ **Gold Standard Assessment**: Mandatory requirement(s) unmet, the add-on does not qualify for gold standard certification." >> $GITHUB_STEP_SUMMARY
@@ -161,7 +161,7 @@ jobs:
       # - https://docs.github.com/en/actions/reference/workflows-and-actions/workflow-commands#adding-a-job-summary
       # - https://docs.github.com/en/actions/reference/workflows-and-actions/contexts#steps-context
       - name: Results
-        if: steps.qa_goldstandard.outcome == "success"
+        if: steps.qa_goldstandard.outcome == 'success'
         env:
           SCORE: ${{ steps.qa_goldstandard.outputs.score }}
           THRESHOLD: ${{ steps.qa_goldstandard.outputs.min_score }}
