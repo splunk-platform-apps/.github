@@ -18,7 +18,7 @@ jobs:
       - uses: actions/checkout@v6
 
       # Check if user is member of authorized team
-      - uses: tspascoal/get-user-teams-membership@v3
+      - uses: tspascoal/get-user-teams-membership@v4
         id: checkUserMember
         with:
           username: ${{ github.event.sender.login }}
