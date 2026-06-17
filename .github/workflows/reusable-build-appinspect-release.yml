@@ -91,7 +91,9 @@ jobs:
           chmod -R +r output
           chmod -R go-w output
           ucc-gen package --path output/${{ steps.app.outputs.name }}
-        shell: bash
+          echo "Troubleshooting packaging"
+          ls -la
+        # shell: bash
 
       - id: artifact
         run: |
@@ -122,6 +124,10 @@ jobs:
         with:
           name: ${{ needs.build.outputs.artifact_name }}
           path: dist
+      - name: Troubleshooting appinspect
+        run: |
+          ls -la
+          ls -la dist
       - uses: splunk/appinspect-cli-action@v2.13
         with:
           app_path: dist
