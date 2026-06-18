@@ -1,17 +1,17 @@
 name: New Application Repo
-description: Request to contribute a brand new app under a new repository! **NOTE** This component request form is a work in progress at present only Splunk add-ons are supported
+description: Request to contribute a brand new app under a new repository!
 title: "New App: "
 labels: ["repo-request"]
 body:
   - type: markdown
     attributes:
       value: |
-        Thanks for your interest in contributing your component!
+        Thanks for your interest in contributing with a new component!
   - type: input
     id: component_name
     attributes:
       label: Splunk App / Add-On Name
-      description: Name of your Splunk App / Add-On in compliance with Splunk [App Naming Convention](https://github.com/splunk-platform-apps/.github/blob/main/.github/CONVENTIONS.md#app-naming-convention)
+      description: Name of your Splunk App / Add-On in compliance with Splunk [App Naming Convention](https://github.com/splunk-platform-apps/.github/blob/main/.github/CONVENTIONS.md#app-naming-convention).
     validations:
       required: true
   - type: input
@@ -30,17 +30,20 @@ body:
       options:
         - 'UCC Framework'
         - 'Add-On Builder (AoB)'
+        - 'None'
     validations:
       required: true
-  - type: textarea
+  - type: input
     id: integration
     attributes:
       label: Integration
-      description: The technology that your app will integrate with
+      description: The technology that your app will integrate with.
     validations:
-      required: true
+      required: false
   - type: textarea
     id: about
     attributes:
       label: About
-      description: Description of what the app does. Include details such as the component's goals and scope.
+      description: Description of what the app does. Include details such as goals and scope.
+    validations:
+      required: true
