@@ -30,7 +30,6 @@ body:
       options:
         - 'UCC Framework'
         - 'Add-On Builder (AoB)'
-        - 'None'
     validations:
       required: true
   - type: input
