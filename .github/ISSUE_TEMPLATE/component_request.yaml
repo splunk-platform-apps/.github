@@ -30,7 +30,7 @@ body:
       options:
         - "UCC Framework"
         - "Add-On Builder (AoB)"
-        - "None"
+        - "Not applicable"
     validations:
       required: true
   - type: textarea
