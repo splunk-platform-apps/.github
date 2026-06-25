@@ -23,7 +23,7 @@ jobs:
         with:
           username: ${{ github.event.sender.login }}
           team: 'admins'
-          GITHUB_TOKEN: ${{ secrets.PRIVATE_KEY }}
+          GITHUB_TOKEN: ${{ secrets.APPROVAL_REPO_PAT }}
 
       - name: Verify authorization
         id: authz
