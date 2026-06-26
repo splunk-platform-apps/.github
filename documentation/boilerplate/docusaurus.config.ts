@@ -50,8 +50,8 @@ const config: Config = {
   ],
 
   themeConfig: {
-    image: 'img/docs-readme-template.png',
     navbar: {
+      title: "Documentation",
       logo: {
         alt: 'Splunk Logo',
         src: 'img/logo.svg',
@@ -60,10 +60,22 @@ const config: Config = {
       },
       items: [
         {
+          to: '/',
+          label: 'Home',
+          position: 'left',
+          activeBaseRegex: '^/' + repo_name + '/?$',
+        },
+        {
           type: 'docSidebar',
           sidebarId: 'tutorialSidebar',
           position: 'left',
-          label: 'Documentation',
+          label: 'Docs',
+        },
+        {
+          href: 'https://github.com/splunk-platform-apps/' + repo_name + '/issues',
+          position: 'left',
+          label: 'Known Issues',
+          'aria-label': 'Known Issues',
         },
         {
           href: 'https://github.com/splunk-platform-apps/' + repo_name,
