@@ -1,6 +1,7 @@
 import clsx from 'clsx';
 import Heading from '@theme/Heading';
 import styles from './styles.module.css';
+import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
 import Link from '@docusaurus/Link';
 
 const FeatureList = [
@@ -39,6 +40,14 @@ const FeatureList = [
 ];
 
 function Feature({ title, Svg, description, to }) {
+  const { siteConfig } = useDocusaurusContext();
+  const { organizationName, projectName } = siteConfig;
+  const releasesUrl = `https://github.com/${organizationName}/${projectName}/releases`;
+
+  if (title == 'Releases') {
+    to = releasesUrl;
+  }
+
   return (
     <div className={clsx('col col--6', styles.featureItem)}>
       <Link to={to} className={styles.card}>
@@ -46,7 +55,7 @@ function Feature({ title, Svg, description, to }) {
           <Svg className={styles.featureSvg} role="img" />
         </div>
         <div className="text--center padding-horiz--md">
-            <Heading as="h3">{title}</Heading>
+          <Heading as="h3">{title}</Heading>
           <p>{description}</p>
         </div>
       </Link >

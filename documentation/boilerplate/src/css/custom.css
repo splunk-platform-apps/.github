@@ -24,20 +24,31 @@
   --feature-splk-color-2: #FF712B;
   --feature-splk-color-3: #FF0F7B;
 
-  --feature-gradient: linear-gradient(
-      135deg,
+  --feature-gradient: linear-gradient(135deg,
       var(--feature-splk-color-1) 5%,
       var(--feature-splk-color-2) 40%,
-      var(--feature-splk-color-3) 85%
-    );
+      var(--feature-splk-color-3) 85%);
+}
+
+/* shared background properties */
+html {
+  background-size: cover;
+  background-position: center 40%;
+  background-attachment: fixed;
+  /* remove if you want it to scroll */
+  background-repeat: no-repeat;
+}
+
+/* light mode image (default) */
+html {
+  background-image: url('/img/background_light.png');
 }
 
 /* Dark mode overrides */
 [data-theme='dark'] {
-  --ifm-color-text: #fff;
-  --ifm-background-color: #1C1E21;
   --ifm-background-surface-color: #252729;
   --ifm-color-primary: #FF0080;
+  background-image: url('/img/background_dark.png');
 }
 
 /* Code blocks styling */
@@ -73,6 +84,14 @@ html[data-theme='dark'] .header-github-link:before {
 .hero .container h1 {
   font-size: 3rem;
   text-transform: capitalize;
+  color: var(--ifm-font-color-base);
+}
+
+/* Subtitle */
+.hero .container p {
+  color: var(--ifm-color-emphasis-800);
+  font-style: italic;
+  font-size: 1.25rem;
 }
 
 /* Customize title in the navigation bar */
