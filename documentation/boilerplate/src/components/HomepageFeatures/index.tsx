@@ -2,11 +2,14 @@ import clsx from 'clsx';
 import Heading from '@theme/Heading';
 import styles from './styles.module.css';
 import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
+import { useAllDocsData } from '@docusaurus/plugin-content-docs/client';
 import Link from '@docusaurus/Link';
+
 
 const FeatureList = [
   {
     title: 'Getting Started',
+    keyword: 'getting_started',
     to: '/docs',
     Svg: require('@site/static/img/rocket.svg').default,
     description: (
@@ -15,6 +18,7 @@ const FeatureList = [
   },
   {
     title: 'Releases',
+    keyword: 'releases',
     to: '/docs',
     Svg: require('@site/static/img/megaphone.svg').default,
     description: (
@@ -23,6 +27,7 @@ const FeatureList = [
   },
   {
     title: 'Usage',
+    keyword: ['usage', 'configuration'],
     to: '/docs',
     Svg: require('@site/static/img/lightbulb.svg').default,
     description: (
@@ -32,6 +37,7 @@ const FeatureList = [
   {
     title: 'Compatibility',
     to: '/docs',
+    keyword: 'versions-supported',
     Svg: require('@site/static/img/checkmark.svg').default,
     description: (
       <>Supported Splunk products, versions, platform requirements.</>
@@ -39,10 +45,49 @@ const FeatureList = [
   },
 ];
 
-function Feature({ title, Svg, description, to }) {
+function getCardLink(to, searchText, allDocsData){
+  // remove dashes, underscores, spaces from strings
+  const normalize = (str) =>
+    (str ?? '').toLowerCase().replace(/[-_\s]/g, '');
+
+  // keywords could be a single string OR an array — normalize to an array
+  const keywords = Array.isArray(searchText) ? searchText : [searchText];
+  const targets = keywords
+    .map(normalize)
+    .filter((t) => t.length > 0); // drop empties so we don't match everything
+
+  const allDocs = Object.values(allDocsData).flatMap((plugin) =>
+    Object.values(plugin.versions).flatMap((v) => v.docs)
+  );
+
+  // Find match on id (case-insensitive to be safe: readme / README)
+  const defaultDoc = allDocs.find(
+    (doc) => doc.id?.toLowerCase() === 'readme'
+  );
+
+  // Find match on path (keywords part of it)
+  const introDoc = targets.length === 0 ? undefined : allDocs.find((doc) => {
+        const docPath = normalize(doc.path);
+        return targets.some((t) => docPath.includes(t));
+      }
+    );
+  const anchorSource = Array.isArray(searchText) ? searchText[0] : searchText;
+  const anchor = (anchorSource ?? '').replaceAll('_', '-');
+
+  // Fallback is always /docs basically
+  return introDoc
+    ? `${introDoc.path}#${anchor}`
+    : (defaultDoc ? `${defaultDoc.path}#${anchor}` : to);
+}
+
+function Feature({ title, Svg, description, to, keyword }) {
+  const allDocsData = useAllDocsData();
   const { siteConfig } = useDocusaurusContext();
   const { organizationName, projectName } = siteConfig;
   const releasesUrl = `https://github.com/${organizationName}/${projectName}/releases`;
+
+  // Assigning links to each card
+  to = getCardLink(to, keyword, allDocsData);
 
   if (title == 'Releases') {
     to = releasesUrl;
