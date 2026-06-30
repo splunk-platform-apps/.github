@@ -19,9 +19,9 @@
 <p align="center">
   <a href="https://docs.splunk.com/Documentation/Splunk/9.4.2/Admin/Whatsanapp">Learn About Splunk Apps and Add-ons 📚</a>
   ·
-  <a href="https://github.com/splunk-platform-apps/README.md">Use These Repositories 🔭</a>
+  <a href="https://github.com/orgs/splunk-platform-apps/repositories">Browse Community Built Apps and Add-ons 🔭</a>
   ·
-  <a href="#contribute">Contribute ❤️‍🔥</a>
+  <a href="#heart_on_fire-contributing">Contribute ❤️‍🔥</a>
 </p>
 
 ---
