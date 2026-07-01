@@ -117,12 +117,12 @@ jobs:
       - uses: actions/checkout@v6
       - uses: actions/setup-python@v6
         with:
-          python-version: 3.9
+          python-version: 3.14
       - uses: actions/download-artifact@v8
         with:
           name: ${{ needs.build.outputs.artifact_name }}
           path: dist
-      - uses: splunk/appinspect-cli-action@v2.11
+      - uses: splunk/appinspect-cli-action@v2.13
         with:
           app_path: dist
           included_tags: ${{ matrix.tags }}
