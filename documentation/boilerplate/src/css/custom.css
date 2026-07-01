@@ -24,43 +24,40 @@
   --feature-splk-color-2: #FF712B;
   --feature-splk-color-3: #FF0F7B;
 
-  --feature-gradient: linear-gradient(135deg,
+  --feature-gradient: linear-gradient(
+      135deg,
       var(--feature-splk-color-1) 5%,
       var(--feature-splk-color-2) 40%,
-      var(--feature-splk-color-3) 85%);
+      var(--feature-splk-color-3) 85%
+    );
 }
 
-/* shared background properties */
-html {
+/* HOMEPAGE BACKGROUND */
+
+/* shared properties */
+html.plugin-pages.plugin-id-default {
   background-size: cover;
   background-position: center 40%;
-  background-attachment: fixed;
-  /* remove if you want it to scroll */
+  background-attachment: fixed; /* remove if you want it to scroll */
   background-repeat: no-repeat;
 }
 
-/* light mode image (default) */
-html {
+/* light mode (default) */
+html.plugin-pages.plugin-id-default {
   background-image: url('/img/background_light.png');
 }
 
 /* Dark mode overrides */
-[data-theme='dark'] {
+html.plugin-pages.plugin-id-default[data-theme='dark'] {
   --ifm-background-surface-color: #252729;
   --ifm-color-primary: #FF0080;
   background-image: url('/img/background_dark.png');
 }
 
-/* Code blocks styling */
-.docusaurus-highlight-code-line {
-  background-color: rgba(0, 0, 0, 0.1);
-  display: block;
-  margin: 0 calc(-1 * var(--ifm-pre-padding));
-  padding: 0 var(--ifm-pre-padding);
-}
-
-[data-theme='dark'] .docusaurus-highlight-code-line {
-  background-color: rgba(255, 255, 255, 0.1);
+/* Make the layout containers transparent so the image shows through */
+html.plugin-pages.plugin-id-default #__docusaurus,
+html.plugin-pages.plugin-id-default .main-wrapper {
+  background-color: transparent;
 }
 
 /* GITHUB ICON */
@@ -138,6 +135,35 @@ html[data-theme='dark'] .header-github-link:before {
       var(--feature-splk-color-1) 0%,
       var(--feature-splk-color-2) 50%,
       var(--feature-splk-color-3) 100%);
+}
+
+/*
+ * SIDEBAR - Modified to:
+ * - Add the app name on top
+ * - Restyle the active item
+ */
+
+/* Remove the navbar offset from the sidebar container */
+.theme-doc-sidebar-container [class*='sidebar_']:not(.sidebar__repo-name) {
+  padding-top: 0 !important;
+}
+
+/* Give the repo name the navbar offset instead so it lands in the visible area */
+.sidebar__repo-name {
+  /* reserve navbar space via padding so the text sits below the navbar */
+  padding-top: calc(var(--ifm-navbar-height) + 0.75rem);
+  padding-bottom: 0.75rem;
+  padding-left: 1rem;
+  padding-right: 1rem;
+
+  font-weight: 600;
+  font-size: 0.95rem;
+  border-bottom: 1px solid var(--ifm-toc-border-color);
+
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  text-transform: capitalize;
 }
 
 /* Settings for mobile and smaller screens */
