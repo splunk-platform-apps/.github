@@ -23,13 +23,15 @@
   --feature-splk-color-1: #FFAB0F;
   --feature-splk-color-2: #FF712B;
   --feature-splk-color-3: #FF0F7B;
+  --feature-splk-active-link-color: #3D95FF;
 
-  --feature-gradient: linear-gradient(
-      135deg,
+  --feature-gradient: linear-gradient(135deg,
       var(--feature-splk-color-1) 5%,
       var(--feature-splk-color-2) 40%,
-      var(--feature-splk-color-3) 85%
-    );
+      var(--feature-splk-color-3) 85%);
+
+  /* Navbar and Footer with the same background color */
+  --ifm-footer-background-color: var(--ifm-navbar-background-color);
 }
 
 /* HOMEPAGE BACKGROUND */
@@ -42,7 +44,7 @@ html.plugin-pages.plugin-id-default {
   background-repeat: no-repeat;
 }
 
-/* light mode (default) */
+/* Light mode (default) */
 html.plugin-pages.plugin-id-default {
   background-image: url('/img/background_light.png');
 }
@@ -89,9 +91,9 @@ html[data-theme='dark'] .header-github-link:before {
 
 /* Subtitle */
 .hero .container p {
-  color: var(--ifm-color-emphasis-800);
+  color: var(--ifm-color-emphasis-700);
   font-style: italic;
-  font-size: 1.25rem;
+  font-size: 1rem;
 }
 
 /* NAVBAR */
@@ -112,7 +114,11 @@ html[data-theme='dark'] .header-github-link:before {
   margin-right: 1rem;
 }
 
-/* SIDEBAR */
+/*
+ * SIDEBAR - Modified to:
+ * - Add the app name on top
+ * - Restyle the active item
+ */
 
 /* Reset the default active text color */
 .menu__link--active {
@@ -137,12 +143,6 @@ html[data-theme='dark'] .header-github-link:before {
       var(--feature-splk-color-3) 100%);
 }
 
-/*
- * SIDEBAR - Modified to:
- * - Add the app name on top
- * - Restyle the active item
- */
-
 /* Remove the navbar offset from the sidebar container */
 .theme-doc-sidebar-container [class*='sidebar_']:not(.sidebar__repo-name) {
   padding-top: 0 !important;
@@ -166,11 +166,101 @@ html[data-theme='dark'] .header-github-link:before {
   text-transform: capitalize;
 }
 
+/* FOOTER - Modified to:
+ * - Align the links horizontally
+ * - Style the links according to design
+ */
+
+/* Ensure the logo sits above the copyright with breathing room */
+.footer__logo {
+  margin-bottom: 2rem;
+}
+
+.footer--dark {
+  background-color: var(--ifm-navbar-background-color);
+}
+
+/* Two columns:
+ * - left (logo/copyright), and
+ * - right (links)
+ */
+
+.footer__two-cols {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  gap: 2rem;
+}
+
+/* LEFT Column */
+
+/* Keep logo + copyright on the left */
+.footer__col-left {
+  text-align: left;
+  font-size: 0.75rem;
+  /* smaller text (default is ~1rem) */
+  color: var(--ifm-color-emphasis-600);
+}
+
+/* RIGHT Column */
+
+/* The link groups render as rows */
+.footer__col-right {
+  display: flex;
+  flex-direction: column;
+  /* stack the two groups as rows */
+  gap: 1rem;
+  align-items: flex-end;
+  /* use flex-start to line up with left edge */
+  text-align: right;
+}
+
+.footer .footer__col {
+  flex: none;
+  padding-bottom: 2%;
+}
+
+/* Make each link group a horizontal row instead of a vertical list */
+.footer__col-right .footer__items {
+  display: -webkit-inline-box;
+  gap: 1.25rem;
+  padding: 0;
+  margin: 0;
+}
+
+/* Adjusting 1st row of links */
+.footer__link-item.footer-row-primary {
+  color: var(--ifm-color-emphasis-600);
+}
+
+[data-theme='dark'] .footer__link-item.footer-row-primary {
+  color: var(--ifm-color-emphasis-600);
+}
+
+/* Hide Docusaurus's default external-link SVG */
+.footer__link-item.footer-row-primary svg[class*='iconExternalLink'] {
+  display: none;
+}
+
+/* Adjusting 2nd row of links */
+.footer__link-item.footer-row-secondary {
+  color: var(--feature-splk-active-link-color);
+}
+
+[data-theme='dark'] .footer__link-item.footer-row-secondary {
+  color: var(--feature-splk-active-link-color);
+}
+
 /* Settings for mobile and smaller screens */
 @media screen and (max-width: 996px) {
   .navbar__brand {
     border-right: none;
     padding-right: 0.5;
     margin-right: 0;
+  }
+
+  .footer__col {
+    margin-bottom: 0;
   }
 }
