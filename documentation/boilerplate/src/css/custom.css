@@ -30,7 +30,7 @@
       var(--feature-splk-color-2) 40%,
       var(--feature-splk-color-3) 85%);
 
-  /* Navbar and Footer with the same background color */
+  --ifm-navbar-background-color: #f7f7f7;
   --ifm-footer-background-color: var(--ifm-navbar-background-color);
 }
 
@@ -97,6 +97,11 @@ html[data-theme='dark'] .header-github-link:before {
 }
 
 /* NAVBAR */
+
+/* Settings for the dark theme only */
+[data-theme='dark'] {
+  --ifm-navbar-background-color: #08090a;
+}
 
 /* Customize title in the navigation bar */
 .navbar__title {
