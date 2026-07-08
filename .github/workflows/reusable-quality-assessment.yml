@@ -124,7 +124,7 @@ jobs:
           echo "value=$result,0" >> $GITHUB_OUTPUT
 
   docs-linting:
-    uses: splunk-platform-apps/.github/.github/workflows/reusable-docs-linting.yml@1
+    uses: splunk-platform-apps/.github/.github/workflows/reusable-docs-linting.yml@v1
 
   gold-standard:
     runs-on: ubuntu-latest
@@ -144,7 +144,7 @@ jobs:
       - name: Assess Gold Standard compatibility
         id: qa_goldstandard
         continue-on-error: true
-        uses: splunk-platform-apps/.github/actions/goldstandard@1
+        uses: splunk-platform-apps/.github/actions/goldstandard@v1
         with:
           appinspect-failures: ${{ needs.appinspect-cli.outputs.failures }}
           report-path: ${{ steps.docslinting.outputs.reportpath }}
