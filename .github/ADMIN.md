@@ -35,39 +35,39 @@ Only [admins](https://github.com/orgs/splunk-platform-apps/teams/admins) are aut
      ```
      git checkout main
      git pull
-     git tag -a 1.x.x <commit-sha> -m "1.x.x add here your message"
-     git push origin tag 1.x.x
+     git tag -a v1.x.x <commit-sha> -m "v1.x.x add here your message"
+     git push origin tag v1.x.x
      ```
 
 3. Confirm the tag appears in the repository.
 
 ### Creating a Major Tag Pointing to the Latest Patch Tag
 
-To create a tag `1` that points to the same commit as `1.x.x` (e.g. `1.0.0`):
+To create a tag `v1` that points to the same commit as `v1.x.x` (e.g. `v1.0.0`):
 
 ```bash
 # Identify the commit SHA that 1.x.x points to
 # or copy it from the GitHub Web Interface
-git rev-parse 1.x.x
+git rev-parse v1.x.x
 # Create the 1 tag at that same commit
-git tag 1 <commit-sha>
-git push origin 1
+git tag v1 <commit-sha>
+git push origin v1
 ```
 
 By creating such a tag and updating it as soon as a latest patch or minor tag is available, consumers can:
 
-- reference workflows by major tag only: `.github/workflows/reusable.yml@1`
+- reference workflows by major tag only: `.github/workflows/reusable.yml@v1`
 - be sure it will be using the most recent workflows
 
 **Updating a Major Tag Pointing to the Latest Tag**
 
-To update tag `1` to point to a new patch tag `1.x.y` (e.g. `1.0.1`):
+To update tag `v1` to point to a new patch tag `v1.x.y` (e.g. `v1.0.1`):
 
 ```bash
 # Checkout the latest release version
-git checkout 1.x.y
+git checkout v1.x.y
 # Force-create the tag locally. Moves the tag 1 to your current commit
-git tag -fa 1 -m "Update version 1 to point to 1.x.y"
+git tag -fa v1 -m "Update version v1 to point to v1.x.y"
 # Force-push the tag to github
-git push origin 1 --force
+git push origin v1 --force
 ```
