@@ -8,8 +8,8 @@
   text-align: center;
   position: relative;
   overflow: hidden;
-  color: #ffffff;
-  background: linear-gradient(to right, #FFAB0F 5%, #FF712B 40%, #FF0F7B 85%);
+  color: var(--ifm-color-text);
+  background-color: transparent;
 }
 
 @media screen and (max-width: 996px) {

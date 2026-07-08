@@ -19,29 +19,51 @@
   --ifm-code-font-size: 95%;
   --ifm-font-family-base: 'Splunk Data Sans Pro', 'Lexend', Arial, sans-serif;
   --ifm-font-family-monospace: 'JetBrains Mono', SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+
+  --feature-splk-color-1: #FFAB0F;
+  --feature-splk-color-2: #FF712B;
+  --feature-splk-color-3: #FF0F7B;
+  --feature-splk-active-link-color: #3D95FF;
+
+  --feature-gradient: linear-gradient(135deg,
+      var(--feature-splk-color-1) 5%,
+      var(--feature-splk-color-2) 40%,
+      var(--feature-splk-color-3) 85%);
+
+  --ifm-navbar-background-color: #f7f7f7;
+  --ifm-footer-background-color: var(--ifm-navbar-background-color);
+}
+
+/* HOMEPAGE BACKGROUND */
+
+/* shared properties */
+html.plugin-pages.plugin-id-default {
+  background-size: cover;
+  background-position: center 40%;
+  background-attachment: fixed; /* remove if you want it to scroll */
+  background-repeat: no-repeat;
+}
+
+/* Light mode (default) */
+html.plugin-pages.plugin-id-default {
+  background-image: url('/img/background_light.png');
 }
 
 /* Dark mode overrides */
-[data-theme='dark'] {
-  --ifm-color-text: #fff;
-  --ifm-background-color: #1C1E21;
+html.plugin-pages.plugin-id-default[data-theme='dark'] {
   --ifm-background-surface-color: #252729;
   --ifm-color-primary: #FF0080;
+  background-image: url('/img/background_dark.png');
 }
 
-/* Code blocks styling */
-.docusaurus-highlight-code-line {
-  background-color: rgba(0, 0, 0, 0.1);
-  display: block;
-  margin: 0 calc(-1 * var(--ifm-pre-padding));
-  padding: 0 var(--ifm-pre-padding);
+/* Make the layout containers transparent so the image shows through */
+html.plugin-pages.plugin-id-default #__docusaurus,
+html.plugin-pages.plugin-id-default .main-wrapper {
+  background-color: transparent;
 }
 
-[data-theme='dark'] .docusaurus-highlight-code-line {
-  background-color: rgba(255, 255, 255, 0.1);
-}
+/* GITHUB ICON */
 
-/* GitHub header icon */
 .header-github-link:hover {
   opacity: 0.6;
 }
@@ -58,8 +80,192 @@ html[data-theme='dark'] .header-github-link:before {
   background: url("data:image/svg+xml,%3Csvg viewBox='0 0 24 24' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath fill='white' d='M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12'/%3E%3C/svg%3E") no-repeat;
 }
 
-/* Capitalize app/add-on titles */
-.hero .hero__title {
+/* HERO BANNER */
+
+/* Title w/ first character Uppercase */
+.hero .container h1 {
   font-size: 3rem;
   text-transform: capitalize;
+  color: var(--ifm-font-color-base);
+}
+
+/* Subtitle */
+.hero .container p {
+  color: var(--ifm-color-emphasis-700);
+  font-style: italic;
+  font-size: 1rem;
+}
+
+/* NAVBAR */
+
+/* Settings for the dark theme only */
+[data-theme='dark'] {
+  --ifm-navbar-background-color: #08090a;
+}
+
+/* Customize title in the navigation bar */
+.navbar__title {
+  font-size: 1.2rem;
+  font-weight: 400;
+  margin-left: 0.5rem;
+  color: var(--ifm-color-emphasis-600);
+}
+
+/* Define navbar divider between logo+title and items  */
+.navbar__brand {
+  border-right: 1px solid var(--ifm-color-emphasis-300);
+  cursor: default;
+  padding-right: 1rem;
+  margin-right: 1rem;
+}
+
+/*
+ * SIDEBAR - Modified to:
+ * - Add the app name on top
+ * - Restyle the active item
+ */
+
+/* Reset the default active text color */
+.menu__link--active {
+  color: var(--ifm-menu-color);
+  position: relative; /* keep room so the bar doesn't overlap content if you want padding */
+  padding-left: calc(var(--ifm-menu-link-padding-horizontal) + 4px);
+}
+
+/* Side gradient bar */
+.menu__link--active::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  height: 70%;
+  width: 4px;
+  border-radius: 4px;
+  background: linear-gradient(180deg,
+      var(--feature-splk-color-1) 0%,
+      var(--feature-splk-color-2) 50%,
+      var(--feature-splk-color-3) 100%);
+}
+
+/* Remove the navbar offset from the sidebar container */
+.theme-doc-sidebar-container [class*='sidebar_']:not(.sidebar__repo-name) {
+  padding-top: 0 !important;
+}
+
+/* Give the repo name the navbar offset instead so it lands in the visible area */
+.sidebar__repo-name {
+  /* reserve navbar space via padding so the text sits below the navbar */
+  padding-top: calc(var(--ifm-navbar-height) + 0.75rem);
+  padding-bottom: 0.75rem;
+  padding-left: 1rem;
+  padding-right: 1rem;
+
+  font-weight: 600;
+  font-size: 0.95rem;
+  border-bottom: 1px solid var(--ifm-toc-border-color);
+
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  text-transform: capitalize;
+}
+
+/* FOOTER - Modified to:
+ * - Align the links horizontally
+ * - Style the links according to design
+ */
+
+/* Ensure the logo sits above the copyright with breathing room */
+.footer__logo {
+  margin-bottom: 2rem;
+}
+
+.footer--dark {
+  background-color: var(--ifm-navbar-background-color);
+}
+
+/* Two columns:
+ * - left (logo/copyright), and
+ * - right (links)
+ */
+
+.footer__two-cols {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  gap: 2rem;
+}
+
+/* LEFT Column */
+
+/* Keep logo + copyright on the left */
+.footer__col-left {
+  text-align: left;
+  font-size: 0.75rem;
+  /* smaller text (default is ~1rem) */
+  color: var(--ifm-color-emphasis-600);
+}
+
+/* RIGHT Column */
+
+/* The link groups render as rows */
+.footer__col-right {
+  display: flex;
+  flex-direction: column;
+  /* stack the two groups as rows */
+  gap: 1rem;
+  align-items: flex-end;
+  /* use flex-start to line up with left edge */
+  text-align: right;
+}
+
+.footer .footer__col {
+  flex: none;
+  padding-bottom: 2%;
+}
+
+/* Make each link group a horizontal row instead of a vertical list */
+.footer__col-right .footer__items {
+  display: -webkit-inline-box;
+  gap: 1.25rem;
+  padding: 0;
+  margin: 0;
+}
+
+/* Adjusting 1st row of links */
+.footer__link-item.footer-row-primary {
+  color: var(--ifm-color-emphasis-600);
+}
+
+[data-theme='dark'] .footer__link-item.footer-row-primary {
+  color: var(--ifm-color-emphasis-600);
+}
+
+/* Hide Docusaurus's default external-link SVG */
+.footer__link-item.footer-row-primary svg[class*='iconExternalLink'] {
+  display: none;
+}
+
+/* Adjusting 2nd row of links */
+.footer__link-item.footer-row-secondary {
+  color: var(--feature-splk-active-link-color);
+}
+
+[data-theme='dark'] .footer__link-item.footer-row-secondary {
+  color: var(--feature-splk-active-link-color);
+}
+
+/* Settings for mobile and smaller screens */
+@media screen and (max-width: 996px) {
+  .navbar__brand {
+    border-right: none;
+    padding-right: 0.5;
+    margin-right: 0;
+  }
+
+  .footer__col {
+    margin-bottom: 0;
+  }
 }
