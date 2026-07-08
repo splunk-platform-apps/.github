@@ -75,6 +75,7 @@ The checks performed are the following:
   - Python linting and formatting with [Ruff](https://astral.sh/ruff)
   - Security scanning with [semgrep](https://semgrep.dev/index.html)
   - Shell linting and formatting with [ShellCheck](https://www.shellcheck.net/)
+  - (Apps only) Javascript/Typescript linting and formatting with [ESLint](https://github.com/eslint/eslint)
 - **General Checks**:
   - Merge conflict detection
   - End-of-file fixing
