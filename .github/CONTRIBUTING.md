@@ -93,6 +93,7 @@ Additionally, our CI/CD pipeline runs these checks on each pull request:
   - Listed above
 - **Build**: Creates app package
 - **Sanity Tests**: Validates app functionality for the Splunk Cloud environment via AppInspect CLI
+- **Compatibility Tests**: Validates app installation against multiple Splunk distros
 - **Quality Assessment**: Verifies [Gold Standard](https://dev.splunk.com/enterprise/docs/planapps/splunk-add-on-gold-standard/) compatibility and checks [documentation quality](https://github.com/splunk-platform-apps/.github/blob/main/documentation/DEV_GUIDELINES.md#quality-assessment)
 
 Other OOB pipelines focus on the [documentation deployment](https://github.com/splunk-platform-apps/.github/blob/main/documentation/DEV_GUIDELINES.md#deployment) and the [Add-On release](#code-release).
@@ -102,6 +103,7 @@ On each tag push, the following checks will be executed before releasing a new v
 
 - **Build**: Creates app package
 - **Sanity Tests**: Validates app functionality for the Splunk Cloud environment via AppInspect CLI
+- **Compatibility Tests**: Validates app installation against multiple Splunk distros
 - **Release Notes Validation**: Checks whether the `CHANGELOG.md` file has been populated with latest info - [guidelines](https://github.com/splunk-platform-apps/.github/blob/main/.github/DEV_WORKFLOW.md#changelog)
 
 ## Code Owners
