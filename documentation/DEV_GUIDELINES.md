@@ -26,7 +26,7 @@ Your repository comes pre-configured with all necessary files and templates.
 
 * Structure your code as per [below](#repository-structure)
 * Add [documentation](#documentation) to your project by updating the `docs/readme.md` file provided in your repository
-* Understand usage and troubleshooting of provided [automation pipelines](https://github.com/splunk-platform-apps/.github/blob/main/.github/CONTRIBUTING.md)
+* Understand usage and troubleshooting of provided [automation pipelines](https://github.com/splunk-platform-apps/.github/blob/main/.github/CONTRIBUTING.md#automated-checks)
 * Understand the [release process](https://github.com/splunk-platform-apps/.github/blob/main/.github/CONTRIBUTING.md#code-release)
 
 ### Repository Structure
