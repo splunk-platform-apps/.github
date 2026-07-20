@@ -160,8 +160,10 @@ jobs:
           exit 1
 
       - name: Verify app is registered
+        env:
+          CONTAINER_ID: ${{ job.services.splunk.id }}
         run: |
-          docker exec splunk bash -lc \
+          docker exec $CONTAINER_ID bash -lc \
             "curl -sk -u ${SPLUNK_USER}:${SPLUNK_PASSWORD} \
               ${SPLUNK_HOST}/services/apps/local?count=0 \
               | tr '\n' ' ' \
