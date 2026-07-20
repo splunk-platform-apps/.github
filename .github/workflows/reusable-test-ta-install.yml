@@ -99,6 +99,7 @@ jobs:
 
   splunk-test:
     runs-on: ubuntu-latest
+    name: Test Installation in Splunk
     needs: bundle
     strategy:
       fail-fast: false
