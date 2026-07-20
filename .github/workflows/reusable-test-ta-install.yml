@@ -109,7 +109,6 @@ jobs:
     services:
       splunk:
         image: splunk/splunk:${{ matrix.version }}
-        name: splunk
         env:
           SPLUNK_START_ARGS: --answer-yes --no-prompt --accept-license
           SPLUNK_GENERAL_TERMS: --accept-sgt-current-at-splunk-com
