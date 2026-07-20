@@ -8,6 +8,7 @@ on:
         type: string
 
 env:
+  SPLUNK_HOST: https://localhost:8089
   SPLUNK_PASSWORD: password
   SPLUNK_USER: admin
   # Set this to your actual TA folder/app name (must match the folder name under etc/apps)
@@ -96,9 +97,32 @@ jobs:
           name: app_dir
           path: output/${{ steps.app.outputs.name }}
 
-  test-ta-install:
+  splunk-test:
     runs-on: ubuntu-latest
+    name: Basic Tests in Splunk
     needs: bundle
+    strategy:
+      fail-fast: false
+      matrix:
+        version:
+          - 10.0.1 # renovate: datasource=docker depName=splunk/splunk
+          - 9.3.0  # renovate: datasource=docker depName=splunk/splunk
+    services:
+      splunk:
+        image: splunk/splunk:${{ matrix.version }}
+        env:
+          SPLUNK_START_ARGS: --answer-yes --no-prompt --accept-license
+          SPLUNK_GENERAL_TERMS: --accept-sgt-current-at-splunk-com
+          SPLUNK_PASSWORD: password
+        options: >-
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 20
+          --health-cmd "curl -sk https://localhost:8089/services/server/info -u admin:password -o /dev/null -w '%{http_code}' | grep -q 200"
+          --health-start-period 30s
+        ports:
+          - 8000:8000
+          - 8089:8089
     steps:
       - uses: actions/checkout@v7
       - uses: actions/download-artifact@v8
@@ -106,41 +130,241 @@ jobs:
           name: app_dir
           path: ${{ needs.bundle.outputs.app_name }}
 
-      - name: Verify volume download
+      - name: Copy Add-on to service container
+        run: docker cp ${{ needs.bundle.outputs.app_name }} ${{ job.services.splunk.id }}:/opt/splunk/etc/apps/${TA_NAME}
+      - name: Troubleshooting copy
         run: |
-          ls ${{ github.workspace }}/${{ needs.bundle.outputs.app_name}}
+          docker exec -i ${{ job.services.splunk.id }} ls -a /opt/splunk/etc/apps
+          docker exec -i ${{ job.services.splunk.id }} ls -a /opt/splunk/etc/apps/${TA_NAME}
 
-      - name: Start Splunk (Docker)
+      - name: Restart instance and wait for Splunk to be up again
         run: |
-          docker run -d --name splunk \
-            -e SPLUNK_START_ARGS="--answer-yes --no-prompt --accept-license" \
-            -e SPLUNK_GENERAL_TERMS="--accept-sgt-current-at-splunk-com" \
-            -e SPLUNK_PASSWORD="${SPLUNK_PASSWORD}" \
-            -v ${{ github.workspace }}/${{ needs.bundle.outputs.app_name}}:/opt/splunk/etc/apps/${TA_NAME} \
-            -p 8089:8089 \
-            -p 8000:8000 \
-            splunk/splunk:latest
-
-      - name: Wait for Splunk API
-        run: |
+          curl -k -u "${SPLUNK_USER}:${SPLUNK_PASSWORD}" "${SPLUNK_HOST}/services/server/control/restart?output_mode=json" -X POST
+          echo ""
+          echo "Waiting for Splunk to restart..."
+          sleep 30
           for i in {1..60}; do
-            if curl -sk https://localhost:8089/services/server/info >/dev/null; then
-              echo "Splunk is up"
+            HTTP_CODE=$(curl -sk -o /dev/null -w "%{http_code}" \
+              -u "${SPLUNK_USER}:${SPLUNK_PASSWORD}" \
+              "${SPLUNK_HOST}/services/server/info")
+            if [ "$HTTP_CODE" -eq 200 ]; then
+              echo "  ✅ Splunk is up and authenticated (attempt ${i})"
               exit 0
             fi
+
+            echo "  Attempt ${i}/60: HTTP ${HTTP_CODE} — waiting 5s..."
             sleep 5
           done
-          docker logs splunk
+
+          echo "❌ Splunk did not become ready"
           exit 1
 
       - name: Verify app is registered
+        env:
+          CONTAINER_ID: ${{ job.services.splunk.id }}
         run: |
-          docker exec splunk bash -lc \
+          docker exec $CONTAINER_ID bash -lc \
             "curl -sk -u ${SPLUNK_USER}:${SPLUNK_PASSWORD} \
-              https://localhost:8089/services/apps/local?count=0 \
+              ${SPLUNK_HOST}/services/apps/local?count=0 \
               | tr '\n' ' ' \
               | grep -q \"<title>${TA_NAME}</title>\""
 
+      - name: Check Add-on is Installed and Enabled
+        run: |
+          echo "📦 Checking if app '${TA_NAME}' is installed and enabled..."
+
+          RESPONSE_FILE=$(mktemp)
+
+          HTTP_CODE=$(curl -sk -w "%{http_code}" \
+            -o "${RESPONSE_FILE}" \
+            -u "${SPLUNK_USER}:${SPLUNK_PASSWORD}" \
+            "${SPLUNK_HOST}/services/apps/local/${TA_NAME}?output_mode=json")
+
+          if [ "$HTTP_CODE" -eq 404 ]; then
+            echo "❌ Add-on '${TA_NAME}' is NOT installed on the Splunk instance."
+            rm -f "${RESPONSE_FILE}"
+            exit 1
+          fi
+
+          DISABLED=$(jq -r '.entry[0].content.disabled // "unknown"' "${RESPONSE_FILE}")
+
+          if [ "$DISABLED" = "true" ] || [ "$DISABLED" = "1" ]; then
+            echo "❌ Add-on '${TA_NAME}' is installed but DISABLED."
+            rm -f "${RESPONSE_FILE}"
+            exit 1
+          fi
+
+          LABEL=$(jq -r '.entry[0].content.label // "N/A"' "${RESPONSE_FILE}")
+          VERSION=$(jq -r '.entry[0].content.version // "N/A"' "${RESPONSE_FILE}")
+
+          echo "✅ Add-on '${TA_NAME}' is installed and enabled."
+          echo "   Label  : ${LABEL}"
+          echo "   Version: ${VERSION}"
+
+          rm -f "${RESPONSE_FILE}"
+
+      - name: Search splunkd.log for Related Errors
+        run: |
+          echo "📋 Searching splunkd.log for errors related to '${TA_NAME}'..."
+
+          SEARCH="search index=_internal sourcetype=splunkd \"${TA_NAME}\" (ERROR OR WARN) | head 20 | table _time component log_level event_message message"
+
+          RESPONSE_FILE=$(mktemp)
+
+          HTTP_CODE=$(curl -sk -w "%{http_code}" \
+            -o "${RESPONSE_FILE}" \
+            -u "${SPLUNK_USER}:${SPLUNK_PASSWORD}" \
+            "${SPLUNK_HOST}/servicesNS/admin/search/search/jobs" \
+            -d "search=${SEARCH}" \
+            -d "output_mode=json" \
+            -d "exec_mode=oneshot" \
+            -d "earliest_time=-24h" \
+            -d "latest_time=now")
+
+          if [ "$HTTP_CODE" -ne 200 ]; then
+            echo "⚠️  Could not query splunkd.log (HTTP ${HTTP_CODE})"
+            rm -f "${RESPONSE_FILE}"
+            exit 0
+          fi
+
+          RESULT_COUNT=$(jq '.results | length // 0' "${RESPONSE_FILE}" 2>/dev/null || echo "0")
+
+          if [ "$RESULT_COUNT" -eq 0 ]; then
+            echo "✅ No recent errors found in splunkd.log for '${TA_NAME}'."
+          else
+            echo "❌  Found ${RESULT_COUNT} error(s) in splunkd.log:"
+            echo ""
+
+            jq -r '.results[] | "  [\(.["_time"] // "N/A")] [\(.component // "N/A")] \(.message // "N/A")"' \
+              "${RESPONSE_FILE}" 2>/dev/null
+
+            exit 1
+          fi
+
+          rm -f "${RESPONSE_FILE}"
+
+      - name: Discover and check actual Input tab endpoints
+        env:
+          CONTAINER_ID: ${{ job.services.splunk.id }}
+        run: |
+          echo "🔎 Discovering actual Input tab endpoints..."
+          FAILED=0
+          GLOBAL_CONFIG="${TA_NAME}/appserver/static/js/build/globalConfig.json"
+          # Extract rest root to build endpoint properly
+          REST_ROOT=$(jq -r '.meta.restRoot // empty' "$GLOBAL_CONFIG" 2>/dev/null)
+          # Extract service names (these are the actual Input tab endpoints)
+          SERVICE_NAMES=$(jq -r '.pages.inputs.services[]?.name // empty' "$GLOBAL_CONFIG" 2>/dev/null)
+
+          if [ -z "$SERVICE_NAMES" ]; then
+            echo "❌ No input services defined in globalConfig.json"
+            echo "check_failed=1" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+
+          echo "   Input tab services:"
+          echo "$SERVICE_NAMES" | while read -r SVC; do
+            echo "     • ${SVC}"
+          done <<< "$SERVICE_NAMES"
+          echo ""
+
+          # ----------------------------------------------------------
+          # Check each service endpoint
+          # ----------------------------------------------------------
+          RESULTS_FILE=$(mktemp)
+          echo "0" > "${RESULTS_FILE}"
+
+          while read -r SVC; do
+            [ -z "$SVC" ] && continue
+
+            EP="/servicesNS/nobody/${TA_NAME}/${REST_ROOT}_${SVC}"
+            echo "Endpoint: ${EP}"
+
+            RESPONSE_FILE=$(mktemp)
+            HTTP_CODE=$(curl -sk -o "${RESPONSE_FILE}" -w "%{http_code}" \
+              -u "${SPLUNK_USER}:${SPLUNK_PASSWORD}" \
+              "${SPLUNK_HOST}${EP}?output_mode=json" 2>/dev/null) || true
+
+            if [ "$HTTP_CODE" -eq 200 ]; then
+              ENTRY_COUNT=$(jq '.entry | length // 0' "${RESPONSE_FILE}" 2>/dev/null || echo "0")
+              echo "  ✅ [${HTTP_CODE}] ${EP}  (entries: ${ENTRY_COUNT})"
+
+            elif [ "$HTTP_CODE" -eq 404 ]; then
+              echo "  ❌ [${HTTP_CODE}] ${EP}  - 404 NOT FOUND"
+              echo "1" > "${RESULTS_FILE}"
+
+              # Try to identify WHY it 404s
+              echo "   Diagnosing..."
+
+              # Check if handler exists in restmap.conf
+              RESTMAP_FILE=$(mktemp)
+              curl -sk -o "${RESTMAP_FILE}" \
+                -u "${SPLUNK_USER}:${SPLUNK_PASSWORD}" \
+                "${SPLUNK_HOST}/servicesNS/nobody/${TA_NAME}/configs/conf-restmap?output_mode=json" 2>/dev/null || true
+
+              HANDLER_EXISTS=$(jq -r --arg svc "$SVC" '
+                .entry[].name
+                | select(test($svc))
+              ' "${RESTMAP_FILE}" 2>/dev/null)
+
+              if [ -z "$HANDLER_EXISTS" ]; then
+                echo "   ↳ No restmap.conf entry found for '${SVC}'"
+              else
+                echo "   ↳ restmap.conf entry exists: ${HANDLER_EXISTS}"
+                echo "   ↳ Handler is registered but Python script likely has errors"
+              fi
+
+              # Check for Python handler file
+              if [ -n "$CONTAINER_ID" ]; then
+                HANDLER_FILE=$(docker exec "$CONTAINER_ID" \
+                  find "/opt/splunk/etc/apps/${TA_NAME}/bin" -name "*_rh_*.py" -print 2>/dev/null | head -20)
+                echo "   ↳ Python files in bin/:"
+                echo "$HANDLER_FILE" | while read -r F; do
+                  echo "       ${F}"
+                done
+              fi
+
+              rm -f "${RESTMAP_FILE}"
+
+            else
+              echo "  ❌ [${HTTP_CODE}] ${EP}"
+              jq -r '.messages[]?.text // empty' "${RESPONSE_FILE}" 2>/dev/null | while read -r MSG; do
+                echo "   ↳ ${MSG}"
+              done
+              echo "1" > "${RESULTS_FILE}"
+            fi
+
+            rm -f "${RESPONSE_FILE}"
+          done <<< "$SERVICE_NAMES"
+
+          FAILED=$(cat "${RESULTS_FILE}")
+
+          if [ "$FAILED" = "1" ]; then
+            echo " "
+            echo "  Possible causes:"
+            echo "    • Missing Python handler in bin/ directory"
+            echo "    • Broken or missing restmap.conf entries"
+            echo "    • Missing UCC library dependencies (splunktaucclib)"
+            echo "    • Incorrect metadata/default.meta permissions"
+            echo "    • App was partially installed or corrupted"
+            echo "    • Handler .py file has import errors"
+            echo "    • Missing or incorrectly formatted README/inputs.conf.spec"
+            echo ""
+            echo "  Recommended next steps:"
+            echo "    1. Check bin/ directory for referenced handler scripts"
+            echo "    2. Verify restmap.conf handler references"
+            echo "    3. Review splunkd.log errors above"
+            echo "    4. Ensure all lib/ dependencies are bundled"
+            echo "    5. Verify inputs.conf.spec format"
+            echo "============================================="
+            exit 1
+          else
+            echo ""
+            echo "✅ RESULT: ALL ENDPOINTS HEALTHY"
+            echo "============================================="
+          fi
+
       - name: Dump logs on failure
         if: failure()
-        run: docker logs splunk
+        env:
+          CONTAINER_ID: ${{ job.services.splunk.id }}
+        run: docker logs $CONTAINER_ID
