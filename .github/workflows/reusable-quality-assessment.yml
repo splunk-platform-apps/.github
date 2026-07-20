@@ -16,7 +16,7 @@ jobs:
     outputs:
       artifact_name: ${{ steps.artifact.outputs.name }}
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
       - uses: actions/setup-python@v6
         with:
           python-version: ${{ matrix.python-version }}
@@ -101,7 +101,7 @@ jobs:
     outputs:
       failures: ${{ steps.result.outputs.value }}
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
       - uses: actions/setup-python@v6
         with:
           python-version: 3.9
@@ -132,7 +132,7 @@ jobs:
       - appinspect-cli
       - docs-linting
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
       - uses: actions/download-artifact@v8
         with:
           name: docs-linting-report
