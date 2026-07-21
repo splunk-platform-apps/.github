@@ -5,5 +5,18 @@
     "dependencyDashboard": false,
     "reviewersFromCodeOwners": false,
     "assignAutomerge": true,
-    "reviewers": [ "team:admins" ]
+    "reviewers": [ "team:admins" ],
+    "packageRules": [
+        {
+            "description": "Disable python upgrades",
+            "matchDepNames": ["actions/setup-python"],
+            "enabled": false
+        },
+        {
+            "description": "Disable upgrades to 'buggy' appinspect CLI actions",
+            "matchManagers": ["github-actions"],
+            "matchDepNames": ["splunk/appinspect-cli-action"],
+            "allowedVersions": "!/^v?2\\.(12|13)/"
+        }
+    ]
 }
