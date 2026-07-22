@@ -48,7 +48,7 @@ are looking to contribute to.
 
 If you've created a brand new App and wish to contribute it, the steps to do so are as follows.
 
-1. Create a new [issue](https://github.com/splunk-platform-apps/.github/issues/new?assignees=&labels=&template=new_repo_request.md&title=) in our `.github` repo to request a new repository to be created for your app.
+1. Create a new [issue](https://github.com/splunk-platform-apps/.github/issues/new?template=component_request.yaml) in our `.github` repo to request a new repository to be created for your app.
 1. [Fork](https://guides.github.com/activities/forking/) the project.
 1. Install [pre-commit](https://pre-commit.com/#install) on your system, if not already installed, and then run `pre-commit install` while inside the app repo.
 
