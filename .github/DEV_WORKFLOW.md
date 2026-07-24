@@ -3,12 +3,12 @@ When contributing to a new project, sometimes getting your development environme
 
 :point_right: This is not a guide on _how_ to develop Splunk apps or add-on (you can find that [here](https://dev.splunk.com/enterprise/docs/developapps)), rather it represents how you might configure your workstation to allow for rapid code->deploy->test cycle.
 
-### Local Development with Visual Studio Code and Docker
+## Local Development with Visual Studio Code and Docker
 We recommend using the official [Splunk Platform Apps Docker image](https://github.com/splunk-platform-apps/Splunk-Platform-Apps-Docker/tree/main/) for development. This image, based on the official [Docker hub Splunk image](https://hub.docker.com/r/splunk/splunk/), comes with a complete, pre-configured Splunk environment optimized for app development.
 
 Please follow [setup guidelines](https://github.com/splunk-platform-apps/Splunk-Platform-Apps-Docker/blob/main/DEV_GUIDELINES.md) for more details about configuring this image.
 
-### Documentation Expectations
+## Documentation Expectations
 All Splunk Platform Apps must maintain comprehensive documentation following the established guidelines. Please refer to our [documentation guidelines](https://github.com/splunk-platform-apps/.github/blob/main/documentation/DEV_GUIDELINES.md) to learn more about:
 
 - Required structure and files
@@ -17,10 +17,16 @@ All Splunk Platform Apps must maintain comprehensive documentation following the
 
 Developers are responsible for maintaining accurate and complete documentation while following the pre-configured templates and structure.
 
-### Changelog
+## Changelog
 Our repositories will use a `CHANGELOG.md` to document changes between versions. This will allow us to create more intelligible releases and add clarity to end users as to what they should expect if a new version is pushed.
 
-#### CHANGELOG.md
+### CHANGELOG.md
 All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/) and this project adheres to [Semantic Versioning](http://semver.org/).
+
+## Automated Cloud Vetting
+To maintain high standards of security, compliance, and quality, all repositories hosting Splunk Apps and Add-ons are subject to automated, regular cloud vetting.
+
+- **Process**: An AI-powered service continuously scans repositories to ensure configurations and code align with organizational standards.
+- **Action Required**: Code owners should review the findings provided by the service. Ensure development practices align with the standards outlined in [CONVENTIONS](./CONVENTIONS.md) to minimize automated feedback.
