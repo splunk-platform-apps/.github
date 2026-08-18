@@ -1,5 +1,8 @@
 # Conventions in use by `splunk-platform-apps` repositories
 
+> [!NOTE]
+> Repositories are regularly scanned by our AI-powered cloud vetting service to ensure compliance with Splunk standards and guarantee compatibility with Splunk Cloud distributions.
+
 ## Code and Style
 We would ask that you adhere to the following guidelines when developing your App to ensure consistency without our platform.
 

@@ -8,8 +8,8 @@
     "reviewers": [ "team:admins" ],
     "packageRules": [
         {
-            "description": "Disable python upgrades",
-            "matchDepNames": ["actions/setup-python"],
+            "description": "Disable python upgrades in 'setup-python' github action",
+            "matchDepNames": ["python"],
             "enabled": false
         },
         {
