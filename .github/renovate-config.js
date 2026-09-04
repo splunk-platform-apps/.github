@@ -66,7 +66,7 @@ module.exports = {
                 '/^\\.github/workflows/.+\\.ya?ml$/'
             ],
             matchStrings: [
-                "-\\s+\"(?<currentValue>[^\"]+)\"\\s+#\\s+renovate:\\s+datasource=(?<datasource>\\S+)\\s+depName=(?<depName>\\S+)"
+                "-\s+['\"]?(?<currentValue>[^'\"\s]+)['\"]?\s+#\s*renovate:\s*datasource=(?<datasource>\S+)\s+depName=(?<depName>\S+)"
             ],
             // depNameTemplate: '{{depName}}',
             versioningTemplate: 'docker'
