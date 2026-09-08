@@ -254,9 +254,7 @@ jobs:
         run: |
           echo "🔎 Discovering actual Input tab endpoints..."
           FAILED=0
-          echo "PWD: $(pwd)"
           GLOBAL_CONFIG="${TA_NAME}/appserver/static/js/build/globalConfig.json"
-          ls -la "$(dirname "$GLOBAL_CONFIG")" || echo "
           # Extract rest root to build endpoint properly
           REST_ROOT=$(jq -r '.meta.restRoot // empty' "$GLOBAL_CONFIG")
           # Extract service names (these are the actual Input tab endpoints)
