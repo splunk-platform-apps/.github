@@ -215,11 +215,11 @@ jobs:
             -o "${RESPONSE_FILE}" \
             -u "${SPLUNK_USER}:${SPLUNK_PASSWORD}" \
             "${SPLUNK_HOST}/servicesNS/admin/search/search/jobs" \
-            -d "search=${SEARCH}" \
-            -d "output_mode=json" \
-            -d "exec_mode=oneshot" \
-            -d "earliest_time=-24h" \
-            -d "latest_time=now")
+            --data-urlencode "search=${SEARCH}" \
+            --data-urlencode "output_mode=json" \
+            --data-urlencode "exec_mode=oneshot" \
+            --data-urlencode "earliest_time=-24h" \
+            --data-urlencode "latest_time=now")
 
           if [ "$HTTP_CODE" -ne 200 ]; then
             echo "⚠️  Could not query splunkd.log (HTTP ${HTTP_CODE})"
@@ -235,8 +235,13 @@ jobs:
             echo "❌  Found ${RESULT_COUNT} error(s) or warning(s) in splunkd.log:"
             echo ""
 
-            jq -r '.results[] | "  [\(.["_time"] // "N/A")] [\(.log_level // "N/A")] [\(.component // "N/A")] \
-              \(.message // "N/A") \(.event_message // "N/A")"' "${RESPONSE_FILE}" 2>/dev/null
+            jq -r '
+              .results[]
+              | "  [\(.["_time"] // "N/A")] "
+              + "[\(.log_level // "N/A")] "
+              + "[\(.component // "N/A")] "
+              + "\(.message // .event_message // "N/A") "
+            ' "${RESPONSE_FILE}" 2>/dev/null
 
             exit 1
           fi
