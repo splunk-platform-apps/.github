@@ -232,11 +232,11 @@ jobs:
           if [ "$RESULT_COUNT" -eq 0 ]; then
             echo "✅ No recent errors found in splunkd.log for '${TA_NAME}'."
           else
-            echo "❌  Found ${RESULT_COUNT} error(s) in splunkd.log:"
+            echo "❌  Found ${RESULT_COUNT} error(s) or warning(s) in splunkd.log:"
             echo ""
 
-            jq -r '.results[] | "  [\(.["_time"] // "N/A")] [\(.component // "N/A")] \(.message // "N/A")"' \
-              "${RESPONSE_FILE}" 2>/dev/null
+            jq -r '.results[] | "  [\(.["_time"] // "N/A")] [\(.log_level // "N/A")] [\(.component // "N/A")] \
+              \(.message // "N/A") \(.event_message // "N/A")"' "${RESPONSE_FILE}" 2>/dev/null
 
             exit 1
           fi
