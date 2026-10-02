@@ -4,10 +4,22 @@
 > Repositories are regularly scanned by our AI-powered cloud vetting service to ensure compliance with Splunk standards and guarantee compatibility with Splunk Cloud distributions.
 
 ## Code and Style
-We would ask that you adhere to the following guidelines when developing your App to ensure consistency without our platform.
+We would ask that you adhere to the following guidelines when developing your App to ensure consistency within our platform.
 
 ### Python
 Projects using Python will be expected to standardize to [PEP8](https://peps.python.org/pep-0008/). Code will be automatically linted using [ruff](https://docs.astral.sh/ruff/). It is an _extremely_ good idea to lint your code with the provided [configuration](https://github.com/splunk-platform-apps/.github/tree/main/actions/lint/ruff.toml) before committing your code.
+
+### Apps Navigation
+To ensure a consistent user experience and ease of support, all applications must include the following two links in their navigation menu:
+- **Documentation**: A link directing the user to the official documentation for the app (e.g. `https://splunk-platform-apps.github.io/<your_app_name>`).
+- **Report an issue**: A link directing the user to the issue reporting page for the app (e.g. `https://splunk-platform-apps.github.io/<your_app_name>/issues`).
+
+### Apps Branding & Logos
+All applications must include a logo that adheres to the official Splunk branding specifications.
+
+- **Specifications**: Ensure the logo dimensions, file format, and transparency meet the current [Splunk app development guidelines](https://dev.splunk.com/enterprise/docs/developapps/createapps#add-icons-to-your-app).
+- **Copyright Compliance**: Developers must ensure they have the legal right to use any custom imagery. Be vigilant regarding copyrights and licensing when selecting a logo.
+- **Fallback**: If there is any doubt regarding the copyright of a custom logo, or if a custom logo is unavailable, use the standard Splunk logo as provided in [this folder](https://github.com/splunk-platform-apps/.github/tree/main/documentation/templates/app-logo).
 
 ## Commit Messages
 [Conventional Commits](https://www.conventionalcommits.org/) specification for commit messages provides a standardized format that makes the commit history more readable and enables automated generation of changelogs.
