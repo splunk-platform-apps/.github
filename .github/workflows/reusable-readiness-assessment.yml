@@ -1,4 +1,4 @@
-name: Readiness Assessment
+name: App Publication Readiness Assessment
 
 on:
   workflow_call:
@@ -33,38 +33,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v7
-      # - name: Get App Info
-      #   id: app
-      #   run: |
-      #     MANIFEST="app.manifest"
-      #     APP_CONF="default/app.conf"
-      #     if [ -f "$MANIFEST" ]; then
-      #       app_id=$(cat "$MANIFEST" | jq -r '.info.id.name')
-      #       app_version=$(cat "$MANIFEST" | jq -r '.info.id.version')
-      #       echo "name=${app_id}" >> $GITHUB_OUTPUT
-      #       echo "version=${app_version}" >> $GITHUB_OUTPUT
-      #     elif [ -f "$APP_CONF" ]; then
-      #       app_pck_id=$(crudini --get "$APP_CONF" package id 2>/dev/null || echo "")
-      #       app_id=$(crudini --get "$APP_CONF" id name 2>/dev/null || echo "")
-      #       if [ -z "$app_pck_id" ] && [ -z "$app_id" ]; then
-      #         echo "App Info Missing ❌ Please add 'package/app.manifest' or stanza [package] with id in 'package/default/app.conf' as per https://docs.splunk.com/Documentation/Splunk/latest/Admin/Appconf#.5Bpackage.5D"
-      #         exit 1
-      #       fi
-      #       if [ -z "$app_id" ]; then
-      #         app_id=$app_pck_id
-      #       fi
-      #       app_version=$(crudini --get "$APP_CONF" launcher version 2>/dev/null || echo "")
-      #       echo "name=${app_id}" >> $GITHUB_OUTPUT
-      #       echo "version=${app_version}" >> $GITHUB_OUTPUT
-      #     else
-      #       echo "Files Not Found ❌ Please add 'package/app.manifest' or 'package/default/app.conf'"
-      #       exit 1
-      #     fi
-      #   working-directory: ./package
-
       - name: Verify availability of required links in app navigation
         env:
-          # APP_ID: ${{ steps.app.outputs.name }}
           APP_ID: ${{ inputs.repo_name }}
         run: |
           set -euo pipefail
@@ -79,7 +49,7 @@ jobs:
           missing=0
           for href in \
             "https://splunk-platform-apps.github.io/${APP_ID}" \
-            "https://splunk-platform-apps.github.io/${APP_ID}/issues"
+            "https://github.com/splunk-platform-apps/${APP_ID}/issues"
           do
             if grep -Fq -- "$href" "$NAV_FILE"; then
               echo "✅ $href found"
