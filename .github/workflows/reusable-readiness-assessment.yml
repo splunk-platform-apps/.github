@@ -59,6 +59,8 @@ jobs:
         working-directory: ./package
 
       - name: Verify availability of required links in app navigation
+        env:
+          APP_ID: ${{ steps.app.outputs.name }}
         run: |
           set -euo pipefail
           NAV_FILE="default/data/ui/nav/default.xml"
@@ -71,8 +73,8 @@ jobs:
 
           missing=0
           for href in \
-            "https://splunk-platform-apps.github.io/%{{ steps.app.outputs.name }}" \
-            "https://splunk-platform-apps.github.io/%{{ steps.app.outputs.name }}/issues"
+            "https://splunk-platform-apps.github.io/${APP_ID}" \
+            "https://splunk-platform-apps.github.io/${APP_ID}/issues"
           do
             if grep -Fq -- "$href" "$NAV_FILE"; then
               echo "✅ $href found"
