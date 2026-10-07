@@ -139,7 +139,7 @@ jobs:
           path: appinspect_result.json
 
   check-readiness:
-    uses: splunk-platform-apps/.github/.github/workflows/reusable-readiness-assessment.yml@v1
+    uses: splunk-platform-apps/.github/.github/workflows/reusable-readiness-assessment.yml@dvr-123-add-check-on-navigation
     with:
       repo_name: ${{ inputs.caller-repo-name }}
 
