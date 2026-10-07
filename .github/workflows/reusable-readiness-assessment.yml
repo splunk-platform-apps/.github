@@ -1,0 +1,63 @@
+name: App Publication Readiness Assessment
+
+on:
+  workflow_call:
+    inputs:
+        repo_name:
+          required: true
+          type: string
+
+permissions:
+  contents: read
+
+jobs:
+  logo-availability:
+    name: Check logo availability
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - name: Check static/ folder exists
+        run: |
+          set -euo pipefail
+          STATIC_DIR="static"
+
+          if [[ ! -d "$STATIC_DIR" ]]; then
+            echo "::error::static/ directory not found"
+            exit 1
+          fi
+        working-directory: ./package
+      # TODO evantually add more steps
+
+  navigation-consistency:
+    name: Check Navigation is consistent with our standards
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - name: Verify availability of required links in app navigation
+        env:
+          APP_ID: ${{ inputs.repo_name }}
+        run: |
+          set -euo pipefail
+          NAV_FILE="default/data/ui/nav/default.xml"
+          DOCS_URL="https://github.com/splunk-platform-apps/.github/tree/main/.github/CONVENTIONS.md#apps-navigation"
+
+          if [[ ! -f "$NAV_FILE" ]]; then
+            echo "::error file=${NAV_FILE}::Nav file not found"
+            exit 1
+          fi
+
+          missing=0
+          for href in \
+            "https://splunk-platform-apps.github.io/${APP_ID}" \
+            "https://github.com/splunk-platform-apps/${APP_ID}/issues"
+          do
+            if grep -Fq -- "$href" "$NAV_FILE"; then
+              echo "✅ $href found"
+            else
+              echo "::error file=${NAV_FILE}::Missing link: $href - see ${DOCS_URL} for the required nav entries"
+              missing=1
+            fi
+          done
+
+          exit "$missing"
+        working-directory: ./package
