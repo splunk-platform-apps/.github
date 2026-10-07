@@ -44,8 +44,6 @@ It's recommended to follow this convention when contributing to the repositories
 ## App Naming Convention
 Apps should follow the [Splunkbase naming guidelines](https://dev.splunk.com/enterprise/docs/releaseapps/splunkbase/namingguidelines/). Further details for Splunk naming conventions can be found [here](https://lantern.splunk.com/Splunk_Success_Framework/Data_Management/Naming_conventions).
 
-An example repository which meets these conventions can be found in the [splunkcommunity\_ta](https://github.com/splunk-platform-apps/splunkcommunity_ta_ucc)
-
 ## Renovate (Automated Dependency Updates)
 Renovate is configured to automatically manage dependency updates across all repositories in this organization.
 
