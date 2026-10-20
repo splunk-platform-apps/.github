@@ -9,7 +9,7 @@ permissions:
 jobs:
   build:
     name: Bundle the App
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     strategy:
       matrix:
         python-version: [ 3.9, 3.13 ]
@@ -95,7 +95,7 @@ jobs:
 
   appinspect-cli:
     name: appinspect-cli
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     continue-on-error: true
     needs: build
     outputs:
