@@ -129,7 +129,7 @@ jobs:
         with:
           name: ${{ needs.build.outputs.artifact_name }}
           path: dist
-      - uses: splunk/appinspect-cli-action@v2.17.0
+      - uses: splunk/appinspect-cli-action@v2.17.1
         with:
           app_path: dist
           included_tags: ${{ matrix.tags }}
