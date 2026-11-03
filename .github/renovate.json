@@ -11,12 +11,6 @@
             "description": "Disable python upgrades in 'setup-python' github action",
             "matchDepNames": ["python"],
             "enabled": false
-        },
-        {
-            "description": "Disable upgrades to 'buggy' appinspect CLI actions",
-            "matchManagers": ["github-actions"],
-            "matchDepNames": ["splunk/appinspect-cli-action"],
-            "allowedVersions": "!/^v?2\\.(12|13)/"
         }
     ]
 }
