@@ -93,7 +93,8 @@ jobs:
       - name: Build and bundle TA
         if: ${{ steps.ta_builder.outputs.result == 'ucc' }}
         run: |
-          ucc-gen build --ta-version ${{ steps.app.outputs.version }}
+          PIP_VER=$(python3 -c 'from importlib.metadata import version; print(version("pip"))')
+          ucc-gen build --ta-version ${{ steps.app.outputs.version }} --pip-version "$PIP_VER"
           chmod -R +r output
           chmod -R go-w output
           ucc-gen package --path output/${{ steps.app.outputs.name }}
