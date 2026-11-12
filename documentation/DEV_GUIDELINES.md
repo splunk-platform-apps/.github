@@ -85,6 +85,8 @@ We use [Docusaurus](https://docusaurus.io/) to build and maintain documentation 
    - Navigation structure
    - Required templates
 
+- The [Remark Github Alerts to Directives plugin](https://www.npmjs.com/package/remark-github-admonitions-to-directives) is used to map [Github alerts](https://docs.github.com/en/get-started/writing-on-github/getting-started-with-writing-and-formatting-on-github/basic-writing-and-formatting-syntax#alerts) in markdown files to Remark directives. Such plugin converts Github blockquote alert style to Remark admonitions syntax as per [Docusarus documentation](https://docusaurus.io/docs/markdown-features/admonitions).
+
 #### Deployment
 
 Documentation is **automatically deployed to GitHub Pages** through the [`docs-deploy.yml`](https://github.com/splunk-platform-apps/.github/.github/workflows/reusable-docs-deploy.yml) pipeline. This pipeline will:
