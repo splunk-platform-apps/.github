@@ -11,6 +11,13 @@
             "description": "Disable python upgrades in 'setup-python' github action",
             "matchDepNames": ["python"],
             "enabled": false
+        },
+        {
+            "description": "Disable OS upgrades in public actions",
+            "matchDatasources": [
+                "github-runners"
+            ],
+            "enabled": false
         }
     ]
 }
