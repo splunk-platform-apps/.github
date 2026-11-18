@@ -31,9 +31,42 @@ jobs:
   navigation-consistency:
     name: Check Navigation is consistent with our standards
     runs-on: ubuntu-latest
+    # TODO find a strategy to extend to private / internal repos
+    if: github.event.repository.visibility == 'public'
     steps:
       - uses: actions/checkout@v7
+      - name: Install crudini
+        run: pipx install crudini
+
+      - name: Verify app visibility from app.conf
+        id: visibility
+        run:: |
+          set -euo pipefail
+          APP_CONF="default/app.conf"
+
+          # Set default to true when is_visible is not set
+          is_visible="true"
+
+          if [[ -f "$APP_CONF" ]]; then
+            # Exits non-zero if the [ui] stanza or the key is missing
+            value="$(crudini --get "$APP_CONF" ui is_visible 2>/dev/null || true)"
+            value="$(printf '%s' "$value" | tr -d '\r[:space:]' | tr '[:upper:]' '[:lower:]')"
+
+            case "$value" in
+              false|0|f|no|n) is_visible="false" ;;
+              "")             echo "ℹ️ is_visible not set in [ui] stanza, defaulting to true" ;;
+              *)              is_visible="true" ;;
+            esac
+          else
+            echo "ℹ️ ${APP_CONF} not found, assuming app is visible"
+          fi
+
+          echo "App visibility: ${is_visible}"
+          echo "is_visible=${is_visible}" >> "$GITHUB_OUTPUT"
+        working-directory: ./package
+
       - name: Verify availability of required links in app navigation
+        if: steps.visibility.outputs.is_visible == 'true'
         env:
           APP_ID: ${{ inputs.repo_name }}
         run: |
