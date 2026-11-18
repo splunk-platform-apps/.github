@@ -13,10 +13,11 @@
             "enabled": false
         },
         {
-            "description": "Disable upgrades to 'buggy' appinspect CLI actions",
-            "matchManagers": ["github-actions"],
-            "matchDepNames": ["splunk/appinspect-cli-action"],
-            "allowedVersions": "!/^v?2\\.(12|13)/"
+            "description": "Disable OS upgrades in public actions",
+            "matchDatasources": [
+                "github-runners"
+            ],
+            "enabled": false
         }
     ]
 }
