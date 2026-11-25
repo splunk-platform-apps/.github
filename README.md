@@ -21,6 +21,25 @@ The `actions` folder contains the GitHub actions available for usage into CI wor
 - :construction: [Gold Standard Assessment](./actions/goldstandard/README.md)
 - :construction: [Splunk App Detector](./actions/splunk-apps-detector/README.md)
 
+## Splunk install test versions
+
+The shared install workflow uses Splunk 10.0.1 and 9.3.0 by default. Apps can set
+`splunk_versions` to a JSON array of exact `splunk/splunk` image tags that match
+their supported Enterprise versions. For example, a Python 3.13-only app can use:
+
+```yaml
+jobs:
+  install-test:
+    uses: splunk-platform-apps/.github/.github/workflows/reusable-test-ta-install.yml@v1
+    with:
+      addon_name: jellyfisher
+      splunk_versions: '["10.6.1.1"]'
+```
+
+The example requires a workflow ref that includes the `splunk_versions` input.
+The workflow checks package installation and registration. Use an app's own
+smoke tests to verify that its commands or inputs work on those versions.
+
 ## Admin Operations
 
 See [ADMIN.md](.github/ADMIN.md) for instructions on tagging and approving new repository requests.
